@@ -9,27 +9,17 @@ import Resolution
 
 public struct PixelCircle: Pixel, View {
     
-    @StateObject public var pix: PIX = CirclePIX()
-    var circlePix: CirclePIX { pix as! CirclePIX }
+    public var pixelTree: PixelTree
     
-    private let resolution: Resolution?
+    @StateObject public var pix: PIX
+    
+//    private let resolution: Resolution?
     
     public init(resolution: Resolution? = nil) {
-        self.resolution = resolution
-    }
-    
-    public var body: some View {
-        PixelView(pix: pix)
-            .onAppear {
-                if let resolution = resolution {
-                    circlePix.resolution = resolution
-                }
-            }
-            .onChange(of: resolution) { resolution in
-                if let resolution = resolution {
-                    circlePix.resolution = resolution
-                }
-            }
+//        self.resolution = resolution
+        let pixelTree: PixelTree = .generator(.circle)
+        self.pixelTree = pixelTree
+        _pix = StateObject(wrappedValue: PixelBuilder.pix(for: pixelTree))
     }
 }
 

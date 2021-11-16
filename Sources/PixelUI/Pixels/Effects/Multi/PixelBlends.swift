@@ -10,23 +10,14 @@ import PixelKit
 
 public struct PixelBlends: Pixel, View {
     
-    @StateObject public var pix: PIX = BlendsPIX()
-    var blendsPix: BlendsPIX { pix as! BlendsPIX }
+    public var pixelTree: PixelTree
     
-    private let pixels: [Pixel]
+    @StateObject public var pix: PIX
     
     public init(@PixelBuilder pixels: () -> [Pixel]) {
-        self.pixels = pixels()
-    }
-    
-    public var body: some View {
-        PixelView(pix: pix)
-            .onAppear {
-                blendsPix.inputs = pixels.map(\.pix) as? [PIX & NODEOut] ?? []
-            }
-//            .onChange(of: pixels) { pixels in
-//                blendsPix.inputs = pixels.map(\.pix) as? [PIX & NODEOut] ?? []
-//            }
+        let pixelTree: PixelTree = .multiEffect(.blends, pixels().map(\.pixelTree))
+        self.pixelTree = pixelTree
+        _pix = StateObject(wrappedValue: PixelBuilder.pix(for: pixelTree))
     }
 }
 
