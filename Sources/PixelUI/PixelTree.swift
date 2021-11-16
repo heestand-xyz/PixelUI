@@ -13,7 +13,7 @@ public indirect enum PixelTree {
     case resource(PIXResourceType)
     
     case singleEffect(PIXSingleEffectType, PixelTree)
-    case mergeEffect(PIXMergerEffectType, PixelTree, PixelTree)
+    case mergerEffect(PIXMergerEffectType, PixelTree, PixelTree)
     case multiEffect(PIXMultiEffectType, [PixelTree])
     
     var pixType: PIXType {
@@ -24,7 +24,7 @@ public indirect enum PixelTree {
             return .content(.resource(type))
         case .singleEffect(let type, _):
             return .effect(.single(type))
-        case .mergeEffect(let type, _, _):
+        case .mergerEffect(let type, _, _):
             return .effect(.merger(type))
         case .multiEffect(let type, _):
             return .effect(.multi(type))
