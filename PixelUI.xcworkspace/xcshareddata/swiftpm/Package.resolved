@@ -1,0 +1,34 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "CoreGraphicsExtensions",
+        "repositoryURL": "https://github.com/heestand-xyz/CoreGraphicsExtensions",
+        "state": {
+          "branch": null,
+          "revision": "82d4d803cebadae60bd7f4c6f86ae83ab076396c",
+          "version": "1.2.0"
+        }
+      },
+      {
+        "package": "Logger",
+        "repositoryURL": "https://github.com/heestand-xyz/Logger",
+        "state": {
+          "branch": null,
+          "revision": "acaa6ef5116c201803682c8d0a8c09a642d8abe2",
+          "version": "0.2.0"
+        }
+      },
+      {
+        "package": "MultiViews",
+        "repositoryURL": "https://github.com/heestand-xyz/MultiViews",
+        "state": {
+          "branch": null,
+          "revision": "9cceb30e1af5fadf02558a970e744cec0136587b",
+          "version": "1.4.1"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

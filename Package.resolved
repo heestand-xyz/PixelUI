@@ -1,0 +1,70 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "CoreGraphicsExtensions",
+        "repositoryURL": "https://github.com/heestand-xyz/CoreGraphicsExtensions",
+        "state": {
+          "branch": null,
+          "revision": "82d4d803cebadae60bd7f4c6f86ae83ab076396c",
+          "version": "1.2.0"
+        }
+      },
+      {
+        "package": "Logger",
+        "repositoryURL": "https://github.com/heestand-xyz/Logger",
+        "state": {
+          "branch": null,
+          "revision": "acaa6ef5116c201803682c8d0a8c09a642d8abe2",
+          "version": "0.2.0"
+        }
+      },
+      {
+        "package": "MultiViews",
+        "repositoryURL": "https://github.com/heestand-xyz/MultiViews",
+        "state": {
+          "branch": null,
+          "revision": "9cceb30e1af5fadf02558a970e744cec0136587b",
+          "version": "1.4.1"
+        }
+      },
+      {
+        "package": "PixelColor",
+        "repositoryURL": "https://github.com/heestand-xyz/PixelColor",
+        "state": {
+          "branch": null,
+          "revision": "8fd2aae506c3d2a548cec7fa1956bdde3d8f5c2d",
+          "version": "1.2.5"
+        }
+      },
+      {
+        "package": "PixelKit",
+        "repositoryURL": "https://github.com/heestand-xyz/PixelKit",
+        "state": {
+          "branch": null,
+          "revision": "77fa7153862378f3d3dd17f0bb05b9f1cf8c3e88",
+          "version": "2.1.2"
+        }
+      },
+      {
+        "package": "RenderKit",
+        "repositoryURL": "https://github.com/heestand-xyz/RenderKit",
+        "state": {
+          "branch": null,
+          "revision": "8578c1d3e55787cdf77068dd10de9a158d061c4f",
+          "version": "1.1.1"
+        }
+      },
+      {
+        "package": "Resolution",
+        "repositoryURL": "https://github.com/heestand-xyz/Resolution",
+        "state": {
+          "branch": null,
+          "revision": "6bfdb68f12165876ec7563b931e43d3dfbb3c953",
+          "version": "1.0.3"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
