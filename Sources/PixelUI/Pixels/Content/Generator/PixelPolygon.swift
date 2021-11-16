@@ -7,24 +7,19 @@ import PixelKit
 import SwiftUI
 import Resolution
 
-public struct PixelPolygon: Pixel, View {
+public struct PixelPolygon: Pixel {
     
     public var pixelTree: PixelTree
     
-    @StateObject public var pix: PIX
-    
-//    private let resolution: Resolution?
-    
-    public init(resolution: Resolution? = nil) {
-//        self.resolution = resolution
-        let pixelTree: PixelTree = .generator(.polygon)
-        self.pixelTree = pixelTree
-        _pix = StateObject(wrappedValue: PixelBuilder.pix(for: pixelTree))
+    public init() {
+        pixelTree = .generator(.polygon)
     }
 }
 
 struct PixelPolygon_Previews: PreviewProvider {
     static var previews: some View {
-        PixelPolygon()
+        Pixels(resolution: ._1024) {
+            PixelPolygon()
+        }
     }
 }

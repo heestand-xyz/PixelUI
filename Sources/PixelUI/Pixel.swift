@@ -8,13 +8,4 @@ import PixelKit
 public protocol Pixel {
     
     var pixelTree: PixelTree { get }
-    
-    var pix: PIX { get }    
-}
-
-extension Pixel {
-    
-    public var body: some View {
-        PixelView(pix: pix)
-    }
 }
