@@ -22,20 +22,20 @@ public struct PixelBuilder {
             break
         case .resource:
             break
-        case .singleEffect(_, let pixelTree):
+        case .singleEffect(_, _, let pixelTree):
             
             guard let singleEffectPix = pix as? PIXSingleEffect else { return nil }
             
             singleEffectPix.input = Self.pix(for: pixelTree, at: resolution)
             
-        case .mergerEffect(_, let pixelTreeA, let pixelTreeB):
+        case .mergerEffect(_, _, let pixelTreeA, let pixelTreeB):
             
             guard let mergerEffectPix = pix as? PIXMergerEffect else { return nil }
             
             mergerEffectPix.inputA = Self.pix(for: pixelTreeA, at: resolution)
             mergerEffectPix.inputB = Self.pix(for: pixelTreeB, at: resolution)
             
-        case .multiEffect(_, let pixelTrees):
+        case .multiEffect(_, _, let pixelTrees):
             
             guard let multiEffectPix = pix as? PIXMultiEffect else { return nil }
             

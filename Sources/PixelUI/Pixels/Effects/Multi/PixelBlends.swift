@@ -13,7 +13,8 @@ public struct PixelBlends: Pixel {
     public var pixelTree: PixelTree
         
     public init(@PixelBuilder pixels: () -> [Pixel]) {
-        pixelTree = .multiEffect(.blends, pixels().map(\.pixelTree))
+        
+        pixelTree = .multiEffect(.blends, [:], pixels().map(\.pixelTree))
     }
 }
 

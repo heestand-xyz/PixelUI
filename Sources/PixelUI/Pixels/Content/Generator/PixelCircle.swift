@@ -11,13 +11,9 @@ public struct PixelCircle: Pixel {
     
     public var pixelTree: PixelTree
     
-    let radius: CGFloat
-    
-    public init(radius: CGFloat = 0.25, resolution: Resolution? = nil) {
+    public init(radius: CGFloat = 0.25) {
         
-        pixelTree = .generator(.circle)
-        
-        self.radius = radius
+        pixelTree = .generator(.circle, ["radius": radius])
     }
 }
 

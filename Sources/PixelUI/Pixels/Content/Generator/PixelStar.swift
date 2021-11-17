@@ -11,8 +11,9 @@ public struct PixelStar: Pixel {
     
     public var pixelTree: PixelTree
         
-    public init(resolution: Resolution? = nil) {
-        pixelTree = .generator(.star)
+    public init() {
+        
+        pixelTree = .generator(.star, [:])
     }
 }
 

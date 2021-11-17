@@ -12,7 +12,8 @@ public struct PixelPolygon: Pixel {
     public var pixelTree: PixelTree
     
     public init() {
-        pixelTree = .generator(.polygon)
+        
+        pixelTree = .generator(.polygon, [:])
     }
 }
 
