@@ -17,7 +17,11 @@ extension Pixels {
     static func update(pixelTree: PixelTree, pix: PIX) {
         
         for (key, value) in pixelTree.metadata {
-            print("------>", key, value)
+            if let circlePix = pix as? CirclePIX {
+                if key == "radius" {
+                    circlePix.radius = value
+                }
+            }
         }
      
         switch pixelTree {
