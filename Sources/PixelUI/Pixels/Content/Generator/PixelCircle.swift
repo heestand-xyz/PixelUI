@@ -9,11 +9,15 @@ import Resolution
 
 public struct PixelCircle: Pixel {
     
+    public let pixType: PIXType = .content(.generator(.circle))
+    
     public var pixelTree: PixelTree
     
+    public let metadata: [String : PixelMetadata]
+    
     public init(radius: CGFloat = 0.25) {
-        
-        pixelTree = .generator(.circle, ["radius": radius])
+        metadata = ["radius": radius]
+        pixelTree = .content
     }
 }
 

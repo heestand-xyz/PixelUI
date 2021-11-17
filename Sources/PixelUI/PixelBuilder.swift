@@ -9,38 +9,36 @@ import PixelKit
 @resultBuilder
 public struct PixelBuilder {
         
-    static func pix(for pixelTree: PixelTree, at resolution: Resolution) -> PIX & NODEOut {
-        pix(for: pixelTree, at: resolution) ?? ColorPIX(at: ._128, color: .clear)
+    static func pix(for pixel: Pixel, at resolution: Resolution) -> PIX & NODEOut {
+        pix(for: pixel, at: resolution) ?? ColorPIX(at: ._128, color: .clear)
     }
     
-    static func pix(for pixelTree: PixelTree, at resolution: Resolution) -> (PIX & NODEOut)? {
+    static func pix(for pixel: Pixel, at resolution: Resolution) -> (PIX & NODEOut)? {
         
-        guard let pix: PIX & NODEOut = pixelTree.pixType.pix(at: ._1024) as? PIX & NODEOut else { return nil }
+        guard let pix: PIX & NODEOut = pixel.pixType.pix(at: ._1024) as? PIX & NODEOut else { return nil }
         
-        switch pixelTree {
-        case .generator:
+        switch pixel.pixelTree {
+        case .content:
             break
-        case .resource:
-            break
-        case .singleEffect(_, _, let pixelTree):
+        case .singleEffect(let pixel):
             
             guard let singleEffectPix = pix as? PIXSingleEffect else { return nil }
             
-            singleEffectPix.input = Self.pix(for: pixelTree, at: resolution)
+            singleEffectPix.input = Self.pix(for: pixel, at: resolution)
             
-        case .mergerEffect(_, _, let pixelTreeA, let pixelTreeB):
+        case .mergerEffect(let pixelA, let pixelB):
             
             guard let mergerEffectPix = pix as? PIXMergerEffect else { return nil }
             
-            mergerEffectPix.inputA = Self.pix(for: pixelTreeA, at: resolution)
-            mergerEffectPix.inputB = Self.pix(for: pixelTreeB, at: resolution)
+            mergerEffectPix.inputA = Self.pix(for: pixelA, at: resolution)
+            mergerEffectPix.inputB = Self.pix(for: pixelB, at: resolution)
             
-        case .multiEffect(_, _, let pixelTrees):
+        case .multiEffect(let pixels):
             
             guard let multiEffectPix = pix as? PIXMultiEffect else { return nil }
             
-            multiEffectPix.inputs = pixelTrees.map { pixelTree in
-                Self.pix(for: pixelTree, at: resolution)
+            multiEffectPix.inputs = pixels.map { pixel in
+                Self.pix(for: pixel, at: resolution)
             }
         }
         

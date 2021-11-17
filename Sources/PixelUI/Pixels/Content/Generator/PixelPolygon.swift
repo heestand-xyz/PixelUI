@@ -9,11 +9,15 @@ import Resolution
 
 public struct PixelPolygon: Pixel {
     
+    public let pixType: PIXType = .content(.generator(.polygon))
+    
+    public var metadata: [String : PixelMetadata]
+    
     public var pixelTree: PixelTree
     
     public init() {
-        
-        pixelTree = .generator(.polygon, [:])
+        metadata = [:]
+        pixelTree = .content
     }
 }
 

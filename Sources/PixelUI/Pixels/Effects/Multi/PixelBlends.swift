@@ -10,11 +10,15 @@ import PixelKit
 
 public struct PixelBlends: Pixel {
     
+    public var pixType: PIXType = .effect(.multi(.blends))
+    
     public var pixelTree: PixelTree
+    
+    public var metadata: [String : PixelMetadata]
         
     public init(@PixelBuilder pixels: () -> [Pixel]) {
-        
-        pixelTree = .multiEffect(.blends, [:], pixels().map(\.pixelTree))
+        metadata = [:]
+        pixelTree = .multiEffect(pixels())
     }
 }
 

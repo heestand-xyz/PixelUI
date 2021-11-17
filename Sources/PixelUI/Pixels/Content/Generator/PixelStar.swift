@@ -9,11 +9,15 @@ import Resolution
 
 public struct PixelStar: Pixel {
     
+    public let pixType: PIXType = .content(.generator(.star))
+    
+    public var metadata: [String : PixelMetadata]
+    
     public var pixelTree: PixelTree
-        
+    
     public init() {
-        
-        pixelTree = .generator(.star, [:])
+        metadata = [:]
+        pixelTree = .content
     }
 }
 

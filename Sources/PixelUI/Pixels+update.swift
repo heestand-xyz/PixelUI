@@ -11,49 +11,47 @@ import PixelKit
 extension Pixels {
     
     func update() {
-        Self.update(pixelTree: pixelTree, pix: pix)
+        Self.update(pixel: rootPixel, pix: pix)
     }
     
-    static func update(pixelTree: PixelTree, pix: PIX) {
+    static func update(pixel: Pixel, pix: PIX) {
         
-        for (key, value) in pixelTree.metadata {
+        for (key, value) in pixel.metadata {
             if let circlePix = pix as? CirclePIX {
-                if key == "radius" {
+                if key == "radius", let value = value as? CGFloat {
                     circlePix.radius = value
                 }
             }
         }
      
-        switch pixelTree {
-        case .generator:
+        switch pixel.pixelTree {
+        case .content:
             break
-        case .resource:
-            break
-        case .singleEffect(_, _, let pixelTree):
+        case .singleEffect(let pixel):
             
             guard let singleEffectPix = pix as? PIXSingleEffect else { return }
             
             guard let inputPix: PIX = singleEffectPix.input as? PIX else { return }
             
-            Self.update(pixelTree: pixelTree, pix: inputPix)
+            Self.update(pixel: pixel, pix: inputPix)
             
-        case .mergerEffect(_, _, let pixelTreeA, let pixelTreeB):
+        case .mergerEffect(let pixelA, let pixelB):
             
             guard let mergerEffectPix = pix as? PIXMergerEffect else { return }
             
             guard let inputPixA: PIX = mergerEffectPix.inputA as? PIX else { return }
             guard let inputPixB: PIX = mergerEffectPix.inputB as? PIX else { return }
             
-            Self.update(pixelTree: pixelTreeA, pix: inputPixA)
-            Self.update(pixelTree: pixelTreeB, pix: inputPixB)
+            Self.update(pixel: pixelA, pix: inputPixA)
+            Self.update(pixel: pixelB, pix: inputPixB)
 
-        case .multiEffect(_, _, let pixelTrees):
+        case .multiEffect(let pixels):
             
             guard let multiEffectPix = pix as? PIXMultiEffect else { return }
             
-            for (pixelTree, inputNode) in zip(pixelTrees, multiEffectPix.inputs) {
+            for (pixel, inputNode) in zip(pixels, multiEffectPix.inputs) {
                 guard let inputPix: PIX = inputNode as? PIX else { continue }
-                Self.update(pixelTree: pixelTree, pix: inputPix)
+                Self.update(pixel: pixel, pix: inputPix)
             }
         }
     }

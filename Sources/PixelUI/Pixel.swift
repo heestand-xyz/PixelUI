@@ -7,5 +7,7 @@ import PixelKit
 
 public protocol Pixel {
     
+    var pixType: PIXType { get }
     var pixelTree: PixelTree { get }
+    var metadata: [String: PixelMetadata] { get }
 }
