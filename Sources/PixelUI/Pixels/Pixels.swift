@@ -1,7 +1,4 @@
 //
-//  File.swift
-//  
-//
 //  Created by Anton Heestand on 2021-11-16.
 //
 
@@ -9,7 +6,7 @@ import SwiftUI
 import Resolution
 import PixelKit
 
-public struct Pixels: View {
+public struct Pixels: ViewRepresentable {
     
     @StateObject var pix: PIX
     
@@ -19,9 +16,9 @@ public struct Pixels: View {
     var currentMetadata: [PixelMetadatas.Key: PixelMetadata] {
         PixelMetadatas.metadata(pixel: rootPixel, pix: pix)
     }
-    var encodedMetadata: [PixelMetadatas.Key: String] {
-        currentMetadata.mapValues(\.encoded)
-    }
+//    var encodedMetadata: [PixelMetadatas.Key: String] {
+//        currentMetadata.mapValues(\.encoded)
+//    }
     
     public init(resolution: Resolution, pixel: @escaping () -> (Pixel)) {
         let pixel = pixel()
@@ -29,17 +26,16 @@ public struct Pixels: View {
         _pix = StateObject(wrappedValue: PixelBuilder.pix(for: pixel, at: resolution))
     }
     
-    public var body: some View {
-        PixelView(pix: pix)
-            .onAppear {
-                update(metadata: diffedMetadata(from: currentMetadata))
-                lastMetadata = currentMetadata
-            }
-            .onChange(of: encodedMetadata) { encodedMetadata in
-                let metadata = encodedMetadata.compactMapValues(\.decoded)
-                update(metadata: diffedMetadata(from: metadata))
-                lastMetadata = metadata
-            }
+    public func makeView(context: Context) -> PIXView {
+        pix.pixView
+    }
+    
+    public func updateView(_ view: PIXView, context: Context) {
+//        let metadata = encodedMetadata.compactMapValues(\.decoded)
+        DispatchQueue.main.async {
+            update(metadata: diffedMetadata(from: currentMetadata))
+            lastMetadata = currentMetadata
+        }
     }
     
     func diffedMetadata(from metadata: [PixelMetadatas.Key: PixelMetadata]) -> [PixelMetadatas.Key: PixelMetadata] {
