@@ -15,16 +15,39 @@ public struct PixelPolygon: Pixel {
     
     public var pixelTree: PixelTree
     
-    public init() {
-        metadata = [:]
+    enum Key: String {
+        case count
+    }
+    
+    public init(count: Int) {
+        metadata = [
+            Key.count.rawValue : count
+        ]
         pixelTree = .content
+    }
+    
+    public func update(metadata: [String : PixelMetadata], pix: PIX) {
+        
+        guard let polygonPix = pix as? PolygonPIX else { return }
+        
+        for (key, value) in metadata {
+        
+            guard let key = Key(rawValue: key) else { continue }
+            
+            switch key {
+            case .count:
+                guard let count = value as? Int else { continue }
+                polygonPix.count = count
+                print("------> Polygon Count", count)
+            }
+        }
     }
 }
 
 struct PixelPolygon_Previews: PreviewProvider {
     static var previews: some View {
         Pixels(resolution: ._1024) {
-            PixelPolygon()
+            PixelPolygon(count: 3)
         }
     }
 }

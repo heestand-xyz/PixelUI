@@ -15,9 +15,32 @@ public struct PixelCircle: Pixel {
     
     public let metadata: [String : PixelMetadata]
     
-    public init(radius: CGFloat = 0.25) {
-        metadata = ["radius": radius]
+    enum Key: String {
+        case radius
+    }
+    
+    public init(radius: CGFloat = 0.5) {
+        metadata = [
+            Key.radius.rawValue : radius
+        ]
         pixelTree = .content
+    }
+    
+    public func update(metadata: [String : PixelMetadata], pix: PIX) {
+        
+        guard let circlePix = pix as? CirclePIX else { return }
+        
+        for (key, value) in metadata {
+        
+            guard let key = Key(rawValue: key) else { continue }
+            
+            switch key {
+            case .radius:
+                guard let radius = value as? CGFloat else { continue }
+                circlePix.radius = radius
+                print("------> Circle Radius", radius)
+            }
+        }
     }
 }
 

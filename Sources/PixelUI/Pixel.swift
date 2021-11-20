@@ -10,4 +10,6 @@ public protocol Pixel {
     var pixType: PIXType { get }
     var pixelTree: PixelTree { get }
     var metadata: [String: PixelMetadata] { get }
+    
+    func update(metadata: [String: PixelMetadata], pix: PIX)
 }

@@ -8,20 +8,20 @@
 import Foundation
 import PixelKit
 
-struct PixelMetadatas {
+public struct PixelMetadatas {
 
-    struct Key: Hashable, Equatable {
+    public struct Key: Hashable, Equatable {
         let pixId: UUID
         let variable: String
     }
     
-    static func metadata(pixel: Pixel, pix: PIX) -> [Key: String] {
+    static func metadata(pixel: Pixel, pix: PIX) -> [Key: PixelMetadata] {
        
-        var allMetadata: [Key: String] = [:]
+        var allMetadata: [Key: PixelMetadata] = [:]
         
         for (key, value) in pixel.metadata {
             let metadataKey = Key(pixId: pix.id, variable: key)
-            allMetadata[metadataKey] = value.asString
+            allMetadata[metadataKey] = value
         }
         
         switch pixel.pixelTree {
