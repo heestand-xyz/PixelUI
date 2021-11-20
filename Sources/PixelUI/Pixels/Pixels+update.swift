@@ -14,7 +14,7 @@ extension Pixels {
         Self.update(metadata: metadata, pixel: rootPixel, pix: pix)
     }
     
-    static func update(metadata: [PixelMetadatas.Key: PixelMetadata], pixel: Pixel, pix: PIX) {
+    private static func update(metadata: [PixelMetadatas.Key: PixelMetadata], pixel: Pixel, pix: PIX) {
         
         var localMetadata: [String: PixelMetadata] = [:]
         for (key, value) in metadata {

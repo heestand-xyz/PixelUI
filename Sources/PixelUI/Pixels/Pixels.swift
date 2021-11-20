@@ -33,7 +33,19 @@ public struct Pixels: ViewRepresentable {
     public func updateView(_ view: PIXView, context: Context) {
 //        let metadata = encodedMetadata.compactMapValues(\.decoded)
         DispatchQueue.main.async {
-            update(metadata: diffedMetadata(from: currentMetadata))
+            
+            let transaction = context.transaction
+            if !transaction.disablesAnimations,
+               let animation: Animation = transaction.animation {
+                print("Pixels Update with Animation")
+//                Self.animate(animation: animation, timer: &object.timer) { fraction in
+//                    Self.motion(pxKeyPath: \.radius, pixKeyPath: \.radius, px: self, pix: pix, at: fraction)
+//                }
+            } else {
+                print("Pixels Update")
+                update(metadata: diffedMetadata(from: currentMetadata))
+            }
+            
             lastMetadata = currentMetadata
         }
     }
