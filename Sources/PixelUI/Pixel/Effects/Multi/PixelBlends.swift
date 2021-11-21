@@ -27,6 +27,18 @@ public struct PixelBlends: Pixel {
         pixelTree = .multiEffect(pixels())
     }
     
+    public func value(at key: String, pix: PIX) -> PixelMetadata? {
+        
+        guard let blendsPix = pix as? BlendsPIX else { return nil }
+
+        guard let key = Key(rawValue: key) else { return nil }
+        
+        switch key {
+        case .blendMode:
+            return blendsPix.blendMode.rawValue
+        }
+    }
+    
     public func update(metadata: [String : PixelMetadata], pix: PIX) {
         
         guard let blendsPix = pix as? BlendsPIX else { return }

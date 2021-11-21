@@ -14,6 +14,7 @@ public protocol PixelMetadata {
 //    var encoded: String { get }
     
     func isEqual(to value: PixelMetadata) -> Bool
+    func interpolate(at fraction: CGFloat, to value: PixelMetadata) -> PixelMetadata
 }
 
 //extension String {
@@ -43,6 +44,11 @@ extension Int: PixelMetadata {
         guard let value = value as? Self else { return false }
         return self == value
     }
+    
+    public func interpolate(at fraction: CGFloat, to value: PixelMetadata) -> PixelMetadata {
+        guard let value = value as? Int else { return self }
+        return Int(round(Double(self) * (1.0 - fraction) + Double(value) * fraction))
+    }
 }
 
 extension CGFloat: PixelMetadata {
@@ -53,6 +59,11 @@ extension CGFloat: PixelMetadata {
         guard let value = value as? Self else { return false }
         return self == value
     }
+    
+    public func interpolate(at fraction: CGFloat, to value: PixelMetadata) -> PixelMetadata {
+        guard let value = value as? CGFloat else { return self }
+        return self * (1.0 - fraction) + value * fraction
+    }
 }
 
 extension String: PixelMetadata {
@@ -62,5 +73,10 @@ extension String: PixelMetadata {
     public func isEqual(to value: PixelMetadata) -> Bool {
         guard let value = value as? Self else { return false }
         return self == value
+    }
+    
+    public func interpolate(at fraction: CGFloat, to value: PixelMetadata) -> PixelMetadata {
+        guard let value = value as? String else { return self }
+        return fraction == 0.0 ? self : value
     }
 }

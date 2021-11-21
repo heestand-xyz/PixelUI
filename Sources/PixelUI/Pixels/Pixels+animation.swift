@@ -86,21 +86,4 @@ extension Pixels {
         RunLoop.current.add(timer!, forMode: .common)
         
     }
-
-//    static func motion<F: Floatable, Pix: PIX, Px: PX>(pxKeyPath: KeyPath<Px, F>,
-//                                                       pixKeyPath: WritableKeyPath<Pix, F>,
-//                                                       px: Px,
-//                                                       pix: Pix,
-//                                                       at fraction: CGFloat) {
-//        let oldValue: F = pix[keyPath: pixKeyPath]
-//        let newValue: F = px[keyPath: pxKeyPath]
-//        guard newValue.floats != oldValue.floats else { return }
-//        var pix: Pix = pix
-//        let floats: [CGFloat] = zip(oldValue.floats, newValue.floats)
-//            .map { (current, new) in
-//                current * (1.0 - fraction) + new * fraction
-//            }
-//        let value: F = F(floats: floats)
-//        pix[keyPath: pixKeyPath] = value
-//    }
 }

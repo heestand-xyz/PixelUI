@@ -26,6 +26,18 @@ public struct PixelCircle: Pixel {
         pixelTree = .content
     }
     
+    public func value(at key: String, pix: PIX) -> PixelMetadata? {
+        
+        guard let circlePix = pix as? CirclePIX else { return nil }
+        
+        guard let key = Key(rawValue: key) else { return nil }
+        
+        switch key {
+        case .radius:
+            return circlePix.radius
+        }
+    }
+    
     public func update(metadata: [String : PixelMetadata], pix: PIX) {
         
         guard let circlePix = pix as? CirclePIX else { return }

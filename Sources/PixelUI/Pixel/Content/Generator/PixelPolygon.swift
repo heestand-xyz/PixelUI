@@ -26,6 +26,18 @@ public struct PixelPolygon: Pixel {
         pixelTree = .content
     }
     
+    public func value(at key: String, pix: PIX) -> PixelMetadata? {
+        
+        guard let polygonPix = pix as? PolygonPIX else { return nil }
+
+        guard let key = Key(rawValue: key) else { return nil }
+        
+        switch key {
+        case .count:
+            return polygonPix.count
+        }
+    }
+    
     public func update(metadata: [String : PixelMetadata], pix: PIX) {
         
         guard let polygonPix = pix as? PolygonPIX else { return }
