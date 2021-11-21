@@ -21,26 +21,26 @@ public struct PixelStar: Pixel {
     
     public init(count: Int) {
         metadata = [
-            Key.count.rawValue : count
+            Key.count.rawValue : count,
         ]
         pixelTree = .content
     }
     
     public func value(at key: String, pix: PIX) -> PixelMetadata? {
         
-        guard let starPix = pix as? StarPIX else { return nil }
+        guard let pix = pix as? StarPIX else { return nil }
 
         guard let key = Key(rawValue: key) else { return nil }
         
         switch key {
         case .count:
-            return starPix.count
+            return pix.count
         }
     }
     
     public func update(metadata: [String : PixelMetadata], pix: PIX) {
         
-        guard let starPix = pix as? StarPIX else { return }
+        guard let pix = pix as? StarPIX else { return }
         
         for (key, value) in metadata {
             
@@ -48,9 +48,8 @@ public struct PixelStar: Pixel {
         
             switch key {
             case .count:
-                guard let count = value as? Int else { continue }
-                starPix.count = count
-                print("------> Star Count", count)
+                guard let value = value as? Int else { continue }
+                pix.count = value
             }
         }
     }

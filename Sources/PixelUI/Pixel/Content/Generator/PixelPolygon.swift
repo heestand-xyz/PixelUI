@@ -21,26 +21,26 @@ public struct PixelPolygon: Pixel {
     
     public init(count: Int) {
         metadata = [
-            Key.count.rawValue : count
+            Key.count.rawValue : count,
         ]
         pixelTree = .content
     }
     
     public func value(at key: String, pix: PIX) -> PixelMetadata? {
         
-        guard let polygonPix = pix as? PolygonPIX else { return nil }
+        guard let pix = pix as? PolygonPIX else { return nil }
 
         guard let key = Key(rawValue: key) else { return nil }
         
         switch key {
         case .count:
-            return polygonPix.count
+            return pix.count
         }
     }
     
     public func update(metadata: [String : PixelMetadata], pix: PIX) {
         
-        guard let polygonPix = pix as? PolygonPIX else { return }
+        guard let pix = pix as? PolygonPIX else { return }
         
         for (key, value) in metadata {
         
@@ -48,9 +48,8 @@ public struct PixelPolygon: Pixel {
             
             switch key {
             case .count:
-                guard let count = value as? Int else { continue }
-                polygonPix.count = count
-                print("------> Polygon Count", count)
+                guard let value = value as? Int else { continue }
+                pix.count = value
             }
         }
     }

@@ -21,26 +21,26 @@ public struct PixelCircle: Pixel {
     
     public init(radius: CGFloat = 0.5) {
         metadata = [
-            Key.radius.rawValue : radius
+            Key.radius.rawValue : radius,
         ]
         pixelTree = .content
     }
     
     public func value(at key: String, pix: PIX) -> PixelMetadata? {
         
-        guard let circlePix = pix as? CirclePIX else { return nil }
+        guard let pix = pix as? CirclePIX else { return nil }
         
         guard let key = Key(rawValue: key) else { return nil }
         
         switch key {
         case .radius:
-            return circlePix.radius
+            return pix.radius
         }
     }
     
     public func update(metadata: [String : PixelMetadata], pix: PIX) {
         
-        guard let circlePix = pix as? CirclePIX else { return }
+        guard let pix = pix as? CirclePIX else { return }
         
         for (key, value) in metadata {
         
@@ -48,9 +48,8 @@ public struct PixelCircle: Pixel {
             
             switch key {
             case .radius:
-                guard let radius = value as? CGFloat else { continue }
-                circlePix.radius = radius
-                print("------> Circle Radius", radius)
+                guard let value = value as? CGFloat else { continue }
+                pix.radius = value
             }
         }
     }
