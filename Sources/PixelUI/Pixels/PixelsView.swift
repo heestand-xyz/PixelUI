@@ -18,12 +18,12 @@ struct PixelsView: ViewRepresentable {
     let size: CGSize
     let resolution: Resolution
     
-    static var lastMetadata: [UUID: [PixelMetadatas.Key: PixelMetadata]] = [:]
+    static var lastMetadata: [UUID: [PixelsMetadata.Key: PixelMetadata]] = [:]
     static var lastSize: [UUID: CGSize] = [:]
     static var lastResolution: [UUID: Resolution] = [:]
 
-    var pixelMetadata: [PixelMetadatas.Key: PixelMetadata] {
-        PixelMetadatas.pixelMetadata(pixel: rootPixel, pix: pix)
+    var pixelMetadata: [PixelsMetadata.Key: PixelMetadata] {
+        PixelsMetadata.pixelMetadata(pixel: rootPixel, pix: pix)
     }
     
     @State var timer: Timer?
@@ -59,7 +59,7 @@ struct PixelsView: ViewRepresentable {
         
         let diffedPixelMetadata = diffedMetadata(from: pixelMetadata, with: lastMetadata)
         
-        let pixMetadata = PixelMetadatas.pixMetadata(pixel: rootPixel, pix: pix, size: size)
+        let pixMetadata = PixelsMetadata.pixMetadata(pixel: rootPixel, pix: pix, size: size)
         
         let transaction = context.transaction
         if !transaction.disablesAnimations,
@@ -79,13 +79,13 @@ struct PixelsView: ViewRepresentable {
         Self.lastResolution[pix.id] = resolution
     }
     
-    func update(metadata: [PixelMetadatas.Key: PixelMetadata], size: CGSize) {
+    func update(metadata: [PixelsMetadata.Key: PixelMetadata], size: CGSize) {
         Pixels.update(metadata: metadata, pixel: rootPixel, pix: pix, size: size)
     }
     
-    func diffedMetadata(from metadata: [PixelMetadatas.Key: PixelMetadata],
-                        with lastMetadata: [PixelMetadatas.Key: PixelMetadata]) -> [PixelMetadatas.Key: PixelMetadata] {
-        var diffedMetadata: [PixelMetadatas.Key: PixelMetadata] = [:]
+    func diffedMetadata(from metadata: [PixelsMetadata.Key: PixelMetadata],
+                        with lastMetadata: [PixelsMetadata.Key: PixelMetadata]) -> [PixelsMetadata.Key: PixelMetadata] {
+        var diffedMetadata: [PixelsMetadata.Key: PixelMetadata] = [:]
         for (key, value) in metadata {
             if let lastValue = lastMetadata[key] {
                 if !value.isEqual(to: lastValue) {
@@ -99,9 +99,9 @@ struct PixelsView: ViewRepresentable {
     }
     
     func interpolateMetadata(at fraction: CGFloat,
-                             pixelMetadata: [PixelMetadatas.Key: PixelMetadata],
-                             pixMetadata: [PixelMetadatas.Key: PixelMetadata]) -> [PixelMetadatas.Key: PixelMetadata] {
-        var metadata: [PixelMetadatas.Key: PixelMetadata] = [:]
+                             pixelMetadata: [PixelsMetadata.Key: PixelMetadata],
+                             pixMetadata: [PixelsMetadata.Key: PixelMetadata]) -> [PixelsMetadata.Key: PixelMetadata] {
+        var metadata: [PixelsMetadata.Key: PixelMetadata] = [:]
         for (pixelKey, pixelValue) in pixelMetadata {
             for (pixKey, pixValue) in pixMetadata {
                 if pixKey == pixelKey {

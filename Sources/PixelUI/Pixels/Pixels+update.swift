@@ -11,7 +11,7 @@ import Resolution
 
 extension Pixels {
     
-    static func update(metadata: [PixelMetadatas.Key: PixelMetadata],
+    static func update(metadata: [PixelsMetadata.Key: PixelMetadata],
                                pixel: Pixel,
                                pix: PIX,
                                size: CGSize) {

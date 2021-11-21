@@ -8,7 +8,7 @@
 import Foundation
 import PixelKit
 
-public struct PixelMetadatas {
+public struct PixelsMetadata {
 
     public struct Key: Hashable, Equatable {
         let pixId: UUID
