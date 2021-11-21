@@ -7,8 +7,9 @@
 
 import Foundation
 import CoreGraphics
-import PixelKit
 import SwiftUI
+import PixelKit
+import PixelColor
 
 public protocol PixelMetadata {
         
@@ -83,6 +84,23 @@ extension CGSize: PixelMetadata {
                       height: height * (1.0 - fraction) + value.height * fraction)
     }
 }
+
+extension PixelColor: PixelMetadata {
+    
+    public func isEqual(to value: PixelMetadata) -> Bool {
+        guard let value = value as? Self else { return false }
+        return self == value
+    }
+    
+    public func interpolate(at fraction: CGFloat, to value: PixelMetadata) -> PixelMetadata {
+        guard let value = value as? Self else { return self }
+        return PixelColor(red: red * (1.0 - fraction) + value.red * fraction,
+                          green: green * (1.0 - fraction) + value.green * fraction,
+                          blue: blue * (1.0 - fraction) + value.blue * fraction,
+                          alpha: alpha * (1.0 - fraction) + value.alpha * fraction)
+    }
+}
+
 
 extension String: PixelMetadata {
     

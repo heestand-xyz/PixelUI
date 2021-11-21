@@ -6,6 +6,7 @@ import Foundation
 import PixelKit
 import SwiftUI
 import Resolution
+import PixelColor
 
 public struct PixelPolygon: Pixel {
     
@@ -20,6 +21,8 @@ public struct PixelPolygon: Pixel {
     enum Key: String, CaseIterable {
         case count
         case radius
+        case color
+        case backgroundColor
     }
     
     public init(count: Int,
@@ -33,6 +36,8 @@ public struct PixelPolygon: Pixel {
                 metadata[key.rawValue] = count
             case .radius:
                 metadata[key.rawValue] = radius
+            case .color, .backgroundColor:
+                continue
             }
         }
     }
@@ -48,6 +53,10 @@ public struct PixelPolygon: Pixel {
             return pix.count
         case .radius:
             return pix.radius
+        case .color:
+            return pix.color
+        case .backgroundColor:
+            return pix.backgroundColor
         }
     }
     
@@ -64,8 +73,27 @@ public struct PixelPolygon: Pixel {
                 Pixels.updateValue(pix: &pix, value: value, at: \.count)
             case .radius:
                 Pixels.updateValue(pix: &pix, value: value, at: \.radius)
+            case .color:
+                Pixels.updateValue(pix: &pix, value: value, at: \.color)
+            case .backgroundColor:
+                Pixels.updateValue(pix: &pix, value: value, at: \.backgroundColor)
             }
         }
+    }
+}
+
+public extension PixelPolygon {
+    
+    func pixelColor(_ color: PixelColor) -> Self {
+        var pixel = self
+        pixel.metadata[Key.color.rawValue] = color
+        return pixel
+    }
+    
+    func pixelBackgroundColor(_ color: PixelColor) -> Self {
+        var pixel = self
+        pixel.metadata[Key.backgroundColor.rawValue] = color
+        return pixel
     }
 }
 

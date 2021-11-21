@@ -6,6 +6,7 @@ import Foundation
 import PixelKit
 import SwiftUI
 import Resolution
+import PixelColor
 
 public struct PixelStar: Pixel {
     
@@ -19,9 +20,15 @@ public struct PixelStar: Pixel {
     
     enum Key: String, CaseIterable {
         case count
+        case leadingRadius
+        case trailingRadius
+        case color
+        case backgroundColor
     }
     
-    public init(count: Int) {
+    public init(count: Int,
+                leadingRadius: CGFloat = 0.5,
+                trailingRadius: CGFloat = 0.25) {
 
         pixelTree = .content
 
@@ -29,6 +36,12 @@ public struct PixelStar: Pixel {
             switch key {
             case .count:
                 metadata[key.rawValue] = count
+            case .leadingRadius:
+                metadata[key.rawValue] = leadingRadius
+            case .trailingRadius:
+                metadata[key.rawValue] = trailingRadius
+            case .color, .backgroundColor:
+                continue
             }
         }
     }
@@ -42,6 +55,14 @@ public struct PixelStar: Pixel {
         switch key {
         case .count:
             return pix.count
+        case .leadingRadius:
+            return pix.leadingRadius
+        case .trailingRadius:
+            return pix.trailingRadius
+        case .color:
+            return pix.color
+        case .backgroundColor:
+            return pix.backgroundColor
         }
     }
     
@@ -56,8 +77,31 @@ public struct PixelStar: Pixel {
             switch key {
             case .count:
                 Pixels.updateValue(pix: &pix, value: value, at: \.count)
+            case .leadingRadius:
+                Pixels.updateValue(pix: &pix, value: value, at: \.leadingRadius)
+            case .trailingRadius:
+                Pixels.updateValue(pix: &pix, value: value, at: \.trailingRadius)
+            case .color:
+                Pixels.updateValue(pix: &pix, value: value, at: \.color)
+            case .backgroundColor:
+                Pixels.updateValue(pix: &pix, value: value, at: \.backgroundColor)
             }
         }
+    }
+}
+
+public extension PixelStar {
+    
+    func pixelColor(_ color: PixelColor) -> Self {
+        var pixel = self
+        pixel.metadata[Key.color.rawValue] = color
+        return pixel
+    }
+    
+    func pixelBackgroundColor(_ color: PixelColor) -> Self {
+        var pixel = self
+        pixel.metadata[Key.backgroundColor.rawValue] = color
+        return pixel
     }
 }
 

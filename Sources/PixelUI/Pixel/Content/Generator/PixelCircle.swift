@@ -6,6 +6,7 @@ import Foundation
 import PixelKit
 import SwiftUI
 import Resolution
+import PixelColor
 
 public struct PixelCircle: Pixel {
     
@@ -19,6 +20,10 @@ public struct PixelCircle: Pixel {
     
     enum Key: String, CaseIterable {
         case radius
+        case color
+        case backgroundColor
+        case edgeRadius
+        case edgeColor
     }
     
     public init(radius: CGFloat = 0.5) {
@@ -29,6 +34,8 @@ public struct PixelCircle: Pixel {
             switch key {
             case .radius:
                 metadata[key.rawValue] = radius
+            case .color, .backgroundColor, .edgeRadius, .edgeColor:
+                continue
             }
         }
     }
@@ -42,6 +49,14 @@ public struct PixelCircle: Pixel {
         switch key {
         case .radius:
             return pix.radius
+        case .color:
+            return pix.color
+        case .backgroundColor:
+            return pix.backgroundColor
+        case .edgeRadius:
+            return pix.edgeRadius
+        case .edgeColor:
+            return pix.edgeColor
         }
     }
     
@@ -56,8 +71,38 @@ public struct PixelCircle: Pixel {
             switch key {
             case .radius:
                 Pixels.updateValue(pix: &pix, value: value, at: \.radius)
+            case .color:
+                Pixels.updateValue(pix: &pix, value: value, at: \.color)
+            case .backgroundColor:
+                Pixels.updateValue(pix: &pix, value: value, at: \.backgroundColor)
+            case .edgeRadius:
+                Pixels.updateValue(pix: &pix, value: value, at: \.edgeRadius)
+            case .edgeColor:
+                Pixels.updateValue(pix: &pix, value: value, at: \.edgeColor)
             }
         }
+    }
+}
+
+public extension PixelCircle {
+    
+    func pixelColor(_ color: PixelColor) -> Self {
+        var pixel = self
+        pixel.metadata[Key.color.rawValue] = color
+        return pixel
+    }
+    
+    func pixelBackgroundColor(_ color: PixelColor) -> Self {
+        var pixel = self
+        pixel.metadata[Key.backgroundColor.rawValue] = color
+        return pixel
+    }
+    
+    func pixelEdge(radius: CGFloat, color: PixelColor) -> Self {
+        var pixel = self
+        pixel.metadata[Key.edgeRadius.rawValue] = radius
+        pixel.metadata[Key.edgeColor.rawValue] = color
+        return pixel
     }
 }
 
