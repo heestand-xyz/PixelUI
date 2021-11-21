@@ -16,9 +16,11 @@ struct PixelsView: ViewRepresentable {
     let rootPixel: Pixel
     
     let size: CGSize
+    let resolution: Resolution
     
     static var lastMetadata: [UUID: [PixelMetadatas.Key: PixelMetadata]] = [:]
     static var lastSize: [UUID: CGSize] = [:]
+    static var lastResolution: [UUID: Resolution] = [:]
 
     var pixelMetadata: [PixelMetadatas.Key: PixelMetadata] {
         PixelMetadatas.pixelMetadata(pixel: rootPixel, pix: pix)
@@ -30,22 +32,27 @@ struct PixelsView: ViewRepresentable {
         let pixel = pixel()
         rootPixel = pixel
         self.size = size
-        _pix = StateObject(wrappedValue: PixelBuilder.pix(for: pixel, at: resolution))
+        self.resolution = resolution
+        _pix = StateObject(wrappedValue: Pixels.pix(for: pixel, at: resolution))
     }
     
     func makeView(context: Context) -> PIXView {
         
         Self.lastMetadata[pix.id] = [:]
+        Self.lastSize[pix.id] = size
+        Self.lastResolution[pix.id] = resolution
         
         return pix.pixView
     }
     
     func updateView(_ view: PIXView, context: Context) {
         
-        if let lastSize: CGSize = Self.lastSize[pix.id] {
-            if size != lastSize {
-                Self.lastMetadata[pix.id] = [:]
-            }
+        if size != Self.lastSize[pix.id] {
+            Self.lastMetadata[pix.id] = [:]
+        }
+        
+        if resolution != Self.lastResolution[pix.id] {
+            Pixels.update(resolution: resolution, pixel: rootPixel, pix: pix)
         }
         
         let lastMetadata = Self.lastMetadata[pix.id] ?? [:]
@@ -69,6 +76,11 @@ struct PixelsView: ViewRepresentable {
         
         Self.lastMetadata[pix.id] = pixelMetadata
         Self.lastSize[pix.id] = size
+        Self.lastResolution[pix.id] = resolution
+    }
+    
+    func update(metadata: [PixelMetadatas.Key: PixelMetadata], size: CGSize) {
+        Pixels.update(metadata: metadata, pixel: rootPixel, pix: pix, size: size)
     }
     
     func diffedMetadata(from metadata: [PixelMetadatas.Key: PixelMetadata],
