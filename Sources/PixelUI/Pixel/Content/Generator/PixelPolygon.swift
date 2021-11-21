@@ -9,6 +9,8 @@ import Resolution
 
 public struct PixelPolygon: Pixel {
     
+    typealias Pix = PolygonPIX
+    
     public let pixType: PIXType = .content(.generator(.polygon))
     
     public var metadata: [String : PixelMetadata]
@@ -28,7 +30,7 @@ public struct PixelPolygon: Pixel {
     
     public func value(at key: String, pix: PIX) -> PixelMetadata? {
         
-        guard let pix = pix as? PolygonPIX else { return nil }
+        guard let pix = pix as? Pix else { return nil }
 
         guard let key = Key(rawValue: key) else { return nil }
         
@@ -40,7 +42,7 @@ public struct PixelPolygon: Pixel {
     
     public func update(metadata: [String : PixelMetadata], pix: PIX) {
         
-        guard let pix = pix as? PolygonPIX else { return }
+        guard let pix = pix as? Pix else { return }
         
         for (key, value) in metadata {
         

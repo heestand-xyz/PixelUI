@@ -9,6 +9,8 @@ import Resolution
 
 public struct PixelStar: Pixel {
     
+    typealias Pix = StarPIX
+    
     public let pixType: PIXType = .content(.generator(.star))
     
     public var metadata: [String : PixelMetadata]
@@ -28,7 +30,7 @@ public struct PixelStar: Pixel {
     
     public func value(at key: String, pix: PIX) -> PixelMetadata? {
         
-        guard let pix = pix as? StarPIX else { return nil }
+        guard let pix = pix as? Pix else { return nil }
 
         guard let key = Key(rawValue: key) else { return nil }
         
@@ -40,7 +42,7 @@ public struct PixelStar: Pixel {
     
     public func update(metadata: [String : PixelMetadata], pix: PIX) {
         
-        guard let pix = pix as? StarPIX else { return }
+        guard let pix = pix as? Pix else { return }
         
         for (key, value) in metadata {
             

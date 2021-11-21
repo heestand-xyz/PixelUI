@@ -8,37 +8,15 @@
 import Foundation
 import CoreGraphics
 import PixelKit
+import SwiftUI
 
 public protocol PixelMetadata {
-    
-//    var encoded: String { get }
-    
+        
     func isEqual(to value: PixelMetadata) -> Bool
     func interpolate(at fraction: CGFloat, to value: PixelMetadata) -> PixelMetadata
 }
 
-//extension String {
-//
-//    var decoded: PixelMetadata? {
-//        let components = components(separatedBy: ":")
-//        guard components.count >= 2 else { return nil }
-//        switch components.first! {
-//        case "int":
-//            return Int(components.last!)
-//        case "float":
-//            guard let double = Double(components.last!) else { return nil }
-//            return CGFloat(double)
-//        case "string":
-//            return components.dropFirst().joined(separator: ":")
-//        default:
-//            return nil
-//        }
-//    }
-//}
-
 extension Int: PixelMetadata {
-    
-//    public var encoded: String { "int:\(self)" }
     
     public func isEqual(to value: PixelMetadata) -> Bool {
         guard let value = value as? Self else { return false }
@@ -46,14 +24,25 @@ extension Int: PixelMetadata {
     }
     
     public func interpolate(at fraction: CGFloat, to value: PixelMetadata) -> PixelMetadata {
-        guard let value = value as? Int else { return self }
+        guard let value = value as? Self else { return self }
         return Int(round(Double(self) * (1.0 - fraction) + Double(value) * fraction))
     }
 }
 
 extension CGFloat: PixelMetadata {
     
-//    public var encoded: String { "float:\(self)" }
+    public func isEqual(to value: PixelMetadata) -> Bool {
+        guard let value = value as? Self else { return false }
+        return self == value
+    }
+    
+    public func interpolate(at fraction: CGFloat, to value: PixelMetadata) -> PixelMetadata {
+        guard let value = value as? Self else { return self }
+        return self * (1.0 - fraction) + value * fraction
+    }
+}
+
+extension Angle: PixelMetadata {
     
     public func isEqual(to value: PixelMetadata) -> Bool {
         guard let value = value as? Self else { return false }
@@ -61,22 +50,49 @@ extension CGFloat: PixelMetadata {
     }
     
     public func interpolate(at fraction: CGFloat, to value: PixelMetadata) -> PixelMetadata {
-        guard let value = value as? CGFloat else { return self }
-        return self * (1.0 - fraction) + value * fraction
+        guard let value = value as? Self else { return self }
+        #warning("Negative Angle Interpolation")
+        return Angle(radians: radians * (1.0 - fraction) + value.radians * fraction)
+    }
+}
+
+extension CGPoint: PixelMetadata {
+    
+    public func isEqual(to value: PixelMetadata) -> Bool {
+        guard let value = value as? Self else { return false }
+        return self == value
+    }
+    
+    public func interpolate(at fraction: CGFloat, to value: PixelMetadata) -> PixelMetadata {
+        guard let value = value as? Self else { return self }
+        return CGPoint(x: x * (1.0 - fraction) + value.x * fraction,
+                       y: y * (1.0 - fraction) + value.y * fraction)
+    }
+}
+
+extension CGSize: PixelMetadata {
+    
+    public func isEqual(to value: PixelMetadata) -> Bool {
+        guard let value = value as? Self else { return false }
+        return self == value
+    }
+    
+    public func interpolate(at fraction: CGFloat, to value: PixelMetadata) -> PixelMetadata {
+        guard let value = value as? Self else { return self }
+        return CGSize(width: width * (1.0 - fraction) + value.width * fraction,
+                      height: height * (1.0 - fraction) + value.height * fraction)
     }
 }
 
 extension String: PixelMetadata {
     
-//    public var encoded: String { "string:\(self)" }
-    
     public func isEqual(to value: PixelMetadata) -> Bool {
         guard let value = value as? Self else { return false }
         return self == value
     }
     
     public func interpolate(at fraction: CGFloat, to value: PixelMetadata) -> PixelMetadata {
-        guard let value = value as? String else { return self }
+        guard let value = value as? Self else { return self }
         return fraction == 0.0 ? self : value
     }
 }

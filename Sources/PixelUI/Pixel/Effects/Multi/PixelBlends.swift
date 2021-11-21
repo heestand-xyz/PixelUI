@@ -10,6 +10,8 @@ import PixelKit
 
 public struct PixelBlends: Pixel {
     
+    typealias Pix = BlendsPIX
+    
     public var pixType: PIXType = .effect(.multi(.blends))
     
     public var pixelTree: PixelTree
@@ -30,7 +32,7 @@ public struct PixelBlends: Pixel {
     
     public func value(at key: String, pix: PIX) -> PixelMetadata? {
         
-        guard let pix = pix as? BlendsPIX else { return nil }
+        guard let pix = pix as? Pix else { return nil }
 
         guard let key = Key(rawValue: key) else { return nil }
         
@@ -42,7 +44,7 @@ public struct PixelBlends: Pixel {
     
     public func update(metadata: [String : PixelMetadata], pix: PIX) {
         
-        guard let pix = pix as? BlendsPIX else { return }
+        guard let pix = pix as? Pix else { return }
         
         for (key, value) in metadata {
             
