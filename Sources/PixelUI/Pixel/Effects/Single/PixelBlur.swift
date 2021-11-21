@@ -12,6 +12,8 @@ public struct PixelBlur: Pixel {
     
     typealias Pix = BlurPIX
     
+    static let maxSize: CGSize = Resolution._4K.size
+    
     public let pixType: PIXType = .effect(.single(.blur))
     
     public var pixelTree: PixelTree
@@ -51,7 +53,7 @@ public struct PixelBlur: Pixel {
         }
     }
     
-    public func value(at key: String, pix: PIX) -> PixelMetadata? {
+    public func value(at key: String, pix: PIX, size: CGSize) -> PixelMetadata? {
         
         guard let pix = pix as? Pix else { return nil }
         
@@ -61,19 +63,19 @@ public struct PixelBlur: Pixel {
         case .style:
             return pix.style.rawValue
         case .radius:
-            return pix.radius
+            return Pixels.inViewSpace(pix.radius, size: Self.maxSize)
         case .angle:
-            return Angle(degrees: pix.angle * 360)
+            return Pixels.asAngle(pix.angle)
         case .position:
-            return pix.position
+            return Pixels.inViewSpace(pix.position, size: size)
         case .quality:
             return pix.quality.rawValue
         }
     }
     
-    public func update(metadata: [String : PixelMetadata], pix: PIX) {
+    public func update(metadata: [String : PixelMetadata], pix: PIX, size: CGSize) {
         
-        guard let pix = pix as? Pix else { return }
+        guard var pix = pix as? Pix else { return }
         
         for (key, value) in metadata {
         
@@ -81,22 +83,15 @@ public struct PixelBlur: Pixel {
             
             switch key {
             case .style:
-                guard let rawValue = value as? String else { continue }
-                guard let value = Pix.BlurStyle(rawValue: rawValue) else { continue }
-                pix.style = value
+                Pixels.updateRawValue(pix: &pix, value: value, at: \.style)
             case .radius:
-                guard let value = value as? CGFloat else { continue }
-                pix.radius = value
+                Pixels.updateValueInPixelSpace(pix: &pix, value: value, size: Self.maxSize, at: \.radius)
             case .angle:
-                guard let value = value as? Angle else { continue }
-                pix.angle = value.degrees / 360
+                Pixels.updateValueAngle(pix: &pix, value: value, at: \.angle)
             case .position:
-                guard let value = value as? CGPoint else { continue }
-                pix.position = value
+                Pixels.updateValueInPixelSpace(pix: &pix, value: value, size: size, at: \.position)
             case .quality:
-                guard let rawValue = value as? Int else { continue }
-                guard let value = PIX.SampleQualityMode(rawValue: rawValue) else { continue }
-                pix.quality = value
+                Pixels.updateRawValue(pix: &pix, value: value, at: \.quality)
             }
         }
     }
@@ -128,7 +123,7 @@ public extension Pixel {
 struct PixelBlur_Previews: PreviewProvider {
     static var previews: some View {
         Pixels(resolution: ._1024) {
-            PixelCircle()
+            PixelCircle(radius: 100)
                 .pixelBlur(radius: 0.1)
         }
     }

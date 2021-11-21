@@ -35,7 +35,7 @@ public struct PixelBlends: Pixel {
         }
     }
     
-    public func value(at key: String, pix: PIX) -> PixelMetadata? {
+    public func value(at key: String, pix: PIX, size: CGSize) -> PixelMetadata? {
         
         guard let pix = pix as? Pix else { return nil }
 
@@ -47,7 +47,7 @@ public struct PixelBlends: Pixel {
         }
     }
     
-    public func update(metadata: [String : PixelMetadata], pix: PIX) {
+    public func update(metadata: [String : PixelMetadata], pix: PIX, size: CGSize) {
         
         guard var pix = pix as? Pix else { return }
         
@@ -67,8 +67,8 @@ struct PixelBlends_Previews: PreviewProvider {
     static var previews: some View {
         Pixels(resolution: ._1024) {
             PixelBlends(mode: .average) {
-                PixelCircle()
-                PixelPolygon(count: 3)
+                PixelCircle(radius: 100)
+                PixelPolygon(count: 3, radius: 100)
             }
         }
     }

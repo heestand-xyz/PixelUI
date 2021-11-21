@@ -21,12 +21,15 @@ public struct PixelPolygon: Pixel {
     enum Key: String, CaseIterable {
         case count
         case radius
+        case position
+        case rotation
+        case cornerRadius
         case color
         case backgroundColor
     }
     
     public init(count: Int,
-                radius: CGFloat = 0.5) {
+                radius: CGFloat) {
 
         pixelTree = .content
 
@@ -36,13 +39,13 @@ public struct PixelPolygon: Pixel {
                 metadata[key.rawValue] = count
             case .radius:
                 metadata[key.rawValue] = radius
-            case .color, .backgroundColor:
+            case .position, .rotation, .cornerRadius, .color, .backgroundColor:
                 continue
             }
         }
     }
     
-    public func value(at key: String, pix: PIX) -> PixelMetadata? {
+    public func value(at key: String, pix: PIX, size: CGSize) -> PixelMetadata? {
         
         guard let pix = pix as? Pix else { return nil }
 
@@ -52,7 +55,13 @@ public struct PixelPolygon: Pixel {
         case .count:
             return pix.count
         case .radius:
-            return pix.radius
+            return Pixels.inViewSpace(pix.radius, size: size)
+        case .position:
+            return Pixels.inViewSpace(pix.position, size: size)
+        case .rotation:
+            return Pixels.asAngle(pix.rotation)
+        case .cornerRadius:
+            return Pixels.inViewSpace(pix.cornerRadius, size: size)
         case .color:
             return pix.color
         case .backgroundColor:
@@ -60,7 +69,7 @@ public struct PixelPolygon: Pixel {
         }
     }
     
-    public func update(metadata: [String : PixelMetadata], pix: PIX) {
+    public func update(metadata: [String : PixelMetadata], pix: PIX, size: CGSize) {
         
         guard var pix = pix as? Pix else { return }
         
@@ -72,7 +81,13 @@ public struct PixelPolygon: Pixel {
             case .count:
                 Pixels.updateValue(pix: &pix, value: value, at: \.count)
             case .radius:
-                Pixels.updateValue(pix: &pix, value: value, at: \.radius)
+                Pixels.updateValueInPixelSpace(pix: &pix, value: value, size: size, at: \.radius)
+            case .position:
+                Pixels.updateValueInPixelSpace(pix: &pix, value: value, size: size, at: \.position)
+            case .rotation:
+                Pixels.updateValueAngle(pix: &pix, value: value, at: \.rotation)
+            case .cornerRadius:
+                Pixels.updateValueInPixelSpace(pix: &pix, value: value, size: size, at: \.cornerRadius)
             case .color:
                 Pixels.updateValue(pix: &pix, value: value, at: \.color)
             case .backgroundColor:
@@ -83,6 +98,24 @@ public struct PixelPolygon: Pixel {
 }
 
 public extension PixelPolygon {
+    
+    func pixelOffset(x: CGFloat = 0.0, y: CGFloat = 0.0) -> Self {
+        var pixel = self
+        pixel.metadata[Key.position.rawValue] = CGPoint(x: x, y: y)
+        return pixel
+    }
+    
+    func pixelRotation(_ angle: Angle) -> Self {
+        var pixel = self
+        pixel.metadata[Key.rotation.rawValue] = angle
+        return pixel
+    }
+    
+    func pixelCornerRadius(_ value: CGFloat) -> Self {
+        var pixel = self
+        pixel.metadata[Key.cornerRadius.rawValue] = value
+        return pixel
+    }
     
     func pixelColor(_ color: PixelColor) -> Self {
         var pixel = self
@@ -100,7 +133,7 @@ public extension PixelPolygon {
 struct PixelPolygon_Previews: PreviewProvider {
     static var previews: some View {
         Pixels(resolution: ._1024) {
-            PixelPolygon(count: 3)
+            PixelPolygon(count: 3, radius: 100)
         }
     }
 }

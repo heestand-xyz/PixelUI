@@ -66,13 +66,13 @@ public struct PixelMetadatas {
         return allMetadata
     }
     
-    static func pixMetadata(pixel: Pixel, pix: PIX) -> [Key: PixelMetadata] {
+    static func pixMetadata(pixel: Pixel, pix: PIX, size: CGSize) -> [Key: PixelMetadata] {
        
         var allMetadata: [Key: PixelMetadata] = [:]
         
         for (key, _) in pixel.metadata {
             let metadataKey = Key(pixId: pix.id, variable: key)
-            allMetadata[metadataKey] = pixel.value(at: key, pix: pix)
+            allMetadata[metadataKey] = pixel.value(at: key, pix: pix, size: size)
         }
         
         switch pixel.pixelTree {
@@ -84,7 +84,7 @@ public struct PixelMetadatas {
 
             guard let inputPix: PIX = singleEffectPix.input as? PIX else { break }
 
-            for (key, value) in Self.pixMetadata(pixel: pixel, pix: inputPix) {
+            for (key, value) in Self.pixMetadata(pixel: pixel, pix: inputPix, size: size) {
                 allMetadata[key] = value
             }
 
@@ -95,10 +95,10 @@ public struct PixelMetadatas {
             guard let inputPixA: PIX = mergerEffectPix.inputA as? PIX else { break }
             guard let inputPixB: PIX = mergerEffectPix.inputB as? PIX else { break }
 
-            for (key, value) in Self.pixMetadata(pixel: pixelA, pix: inputPixA) {
+            for (key, value) in Self.pixMetadata(pixel: pixelA, pix: inputPixA, size: size) {
                 allMetadata[key] = value
             }
-            for (key, value) in Self.pixMetadata(pixel: pixelB, pix: inputPixB) {
+            for (key, value) in Self.pixMetadata(pixel: pixelB, pix: inputPixB, size: size) {
                 allMetadata[key] = value
             }
 
@@ -108,7 +108,7 @@ public struct PixelMetadatas {
 
             for (pixel, inputNode) in zip(pixels, multiEffectPix.inputs) {
                 guard let inputPix: PIX = inputNode as? PIX else { continue }
-                for (key, value) in Self.pixMetadata(pixel: pixel, pix: inputPix) {
+                for (key, value) in Self.pixMetadata(pixel: pixel, pix: inputPix, size: size) {
                     allMetadata[key] = value
                 }
             }

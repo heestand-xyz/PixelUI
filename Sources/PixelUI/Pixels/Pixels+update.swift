@@ -10,18 +10,21 @@ import PixelKit
 
 extension Pixels {
     
-    func update(metadata: [PixelMetadatas.Key: PixelMetadata]) {
-        Self.update(metadata: metadata, pixel: rootPixel, pix: pix)
+    func update(metadata: [PixelMetadatas.Key: PixelMetadata], size: CGSize) {
+        Self.update(metadata: metadata, pixel: rootPixel, pix: pix, size: size)
     }
     
-    private static func update(metadata: [PixelMetadatas.Key: PixelMetadata], pixel: Pixel, pix: PIX) {
+    private static func update(metadata: [PixelMetadatas.Key: PixelMetadata],
+                               pixel: Pixel,
+                               pix: PIX,
+                               size: CGSize) {
         
         var localMetadata: [String: PixelMetadata] = [:]
         for (key, value) in metadata {
             guard key.pixId == pix.id else { continue }
             localMetadata[key.variable] = value
         }
-        pixel.update(metadata: localMetadata, pix: pix)
+        pixel.update(metadata: localMetadata, pix: pix, size: size)
      
         switch pixel.pixelTree {
         case .content:
@@ -32,7 +35,7 @@ extension Pixels {
             
             guard let inputPix: PIX = singleEffectPix.input as? PIX else { return }
             
-            Self.update(metadata: metadata, pixel: pixel, pix: inputPix)
+            Self.update(metadata: metadata, pixel: pixel, pix: inputPix, size: size)
             
         case .mergerEffect(let pixelA, let pixelB):
             
@@ -41,8 +44,8 @@ extension Pixels {
             guard let inputPixA: PIX = mergerEffectPix.inputA as? PIX else { return }
             guard let inputPixB: PIX = mergerEffectPix.inputB as? PIX else { return }
             
-            Self.update(metadata: metadata, pixel: pixelA, pix: inputPixA)
-            Self.update(metadata: metadata, pixel: pixelB, pix: inputPixB)
+            Self.update(metadata: metadata, pixel: pixelA, pix: inputPixA, size: size)
+            Self.update(metadata: metadata, pixel: pixelB, pix: inputPixB, size: size)
 
         case .multiEffect(let pixels):
             
@@ -50,7 +53,7 @@ extension Pixels {
             
             for (pixel, inputNode) in zip(pixels, multiEffectPix.inputs) {
                 guard let inputPix: PIX = inputNode as? PIX else { continue }
-                Self.update(metadata: metadata, pixel: pixel, pix: inputPix)
+                Self.update(metadata: metadata, pixel: pixel, pix: inputPix, size: size)
             }
         }
     }

@@ -11,6 +11,6 @@ public protocol Pixel {
     var pixelTree: PixelTree { get }
     var metadata: [String: PixelMetadata] { get set }
     
-    func value(at key: String, pix: PIX) -> PixelMetadata?
-    func update(metadata: [String: PixelMetadata], pix: PIX)
+    func value(at key: String, pix: PIX, size: CGSize) -> PixelMetadata?
+    func update(metadata: [String: PixelMetadata], pix: PIX, size: CGSize)
 }

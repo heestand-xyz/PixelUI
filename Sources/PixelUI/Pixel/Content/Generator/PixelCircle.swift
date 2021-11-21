@@ -20,13 +20,14 @@ public struct PixelCircle: Pixel {
     
     enum Key: String, CaseIterable {
         case radius
+        case position
         case color
         case backgroundColor
         case edgeRadius
         case edgeColor
     }
     
-    public init(radius: CGFloat = 0.5) {
+    public init(radius: CGFloat) {
 
         pixelTree = .content
         
@@ -34,13 +35,13 @@ public struct PixelCircle: Pixel {
             switch key {
             case .radius:
                 metadata[key.rawValue] = radius
-            case .color, .backgroundColor, .edgeRadius, .edgeColor:
+            case .position, .color, .backgroundColor, .edgeRadius, .edgeColor:
                 continue
             }
         }
     }
     
-    public func value(at key: String, pix: PIX) -> PixelMetadata? {
+    public func value(at key: String, pix: PIX, size: CGSize) -> PixelMetadata? {
         
         guard let pix = pix as? Pix else { return nil }
         
@@ -48,19 +49,21 @@ public struct PixelCircle: Pixel {
         
         switch key {
         case .radius:
-            return pix.radius
+            return Pixels.inViewSpace(pix.radius, size: size)
+        case .position:
+            return Pixels.inViewSpace(pix.position, size: size)
         case .color:
             return pix.color
         case .backgroundColor:
             return pix.backgroundColor
         case .edgeRadius:
-            return pix.edgeRadius
+            return Pixels.inViewSpace(pix.edgeRadius, size: size)
         case .edgeColor:
             return pix.edgeColor
         }
     }
     
-    public func update(metadata: [String : PixelMetadata], pix: PIX) {
+    public func update(metadata: [String : PixelMetadata], pix: PIX, size: CGSize) {
         
         guard var pix = pix as? Pix else { return }
         
@@ -70,13 +73,15 @@ public struct PixelCircle: Pixel {
             
             switch key {
             case .radius:
-                Pixels.updateValue(pix: &pix, value: value, at: \.radius)
+                Pixels.updateValueInPixelSpace(pix: &pix, value: value, size: size, at: \.radius)
+            case .position:
+                Pixels.updateValueInPixelSpace(pix: &pix, value: value, size: size, at: \.position)
             case .color:
                 Pixels.updateValue(pix: &pix, value: value, at: \.color)
             case .backgroundColor:
                 Pixels.updateValue(pix: &pix, value: value, at: \.backgroundColor)
             case .edgeRadius:
-                Pixels.updateValue(pix: &pix, value: value, at: \.edgeRadius)
+                Pixels.updateValueInPixelSpace(pix: &pix, value: value, size: size, at: \.edgeRadius)
             case .edgeColor:
                 Pixels.updateValue(pix: &pix, value: value, at: \.edgeColor)
             }
@@ -85,6 +90,12 @@ public struct PixelCircle: Pixel {
 }
 
 public extension PixelCircle {
+    
+    func pixelOffset(x: CGFloat = 0.0, y: CGFloat = 0.0) -> Self {
+        var pixel = self
+        pixel.metadata[Key.position.rawValue] = CGPoint(x: x, y: y)
+        return pixel
+    }
     
     func pixelColor(_ color: PixelColor) -> Self {
         var pixel = self

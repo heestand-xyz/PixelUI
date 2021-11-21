@@ -13,13 +13,10 @@ public struct Pixels: ViewRepresentable {
     let rootPixel: Pixel
     
     static var lastMetadata: [UUID: [PixelMetadatas.Key: PixelMetadata]] = [:]
-//    @State var lastMetadata: [PixelMetadatas.Key: PixelMetadata] = [:]
+
     var pixelMetadata: [PixelMetadatas.Key: PixelMetadata] {
         PixelMetadatas.pixelMetadata(pixel: rootPixel, pix: pix)
     }
-//    var encodedMetadata: [PixelMetadatas.Key: String] {
-//        currentMetadata.mapValues(\.encoded)
-//    }
     
     @State var timer: Timer?
     
@@ -35,30 +32,27 @@ public struct Pixels: ViewRepresentable {
     }
     
     public func updateView(_ view: PIXView, context: Context) {
-//        let metadata = encodedMetadata.compactMapValues(\.decoded)
+        
+        let size: CGSize = view.bounds.size
+        guard size.height > 0.0 else { return }
 
         let diffedPixelMetadata = diffedMetadata(from: pixelMetadata, with: Self.lastMetadata[pix.id] ?? [:])
+        
         Self.lastMetadata[pix.id] = pixelMetadata
         
-        print("Pixels Update View", diffedPixelMetadata.count)
-
-        DispatchQueue.main.async {
-            
-            let pixMetadata = PixelMetadatas.pixMetadata(pixel: rootPixel, pix: pix)
-            
-            let transaction = context.transaction
-            if !transaction.disablesAnimations,
-               let animation: Animation = transaction.animation {
-                print("Pixels Update with Animation")
-                Self.animate(animation: animation, timer: &timer) { fraction in
-                    let interpolatedMetadata = interpolateMetadata(at: fraction, pixelMetadata: diffedPixelMetadata, pixMetadata: pixMetadata)
-                    update(metadata: interpolatedMetadata)
-                }
-            } else {
-                print("Pixels Update")
-                update(metadata: diffedPixelMetadata)
+        let pixMetadata = PixelMetadatas.pixMetadata(pixel: rootPixel, pix: pix, size: size)
+        
+        let transaction = context.transaction
+        if !transaction.disablesAnimations,
+           let animation: Animation = transaction.animation {
+            print("Pixels Update with Animation")
+            Self.animate(animation: animation, timer: &timer) { fraction in
+                let interpolatedMetadata = interpolateMetadata(at: fraction, pixelMetadata: diffedPixelMetadata, pixMetadata: pixMetadata)
+                update(metadata: interpolatedMetadata, size: size)
             }
-            
+        } else {
+            print("Pixels Update")
+            update(metadata: diffedPixelMetadata, size: size)
         }
     }
     
