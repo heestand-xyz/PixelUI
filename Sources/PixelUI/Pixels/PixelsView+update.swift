@@ -8,7 +8,7 @@
 import Foundation
 import PixelKit
 
-extension Pixels {
+extension PixelsView {
     
     func update(metadata: [PixelMetadatas.Key: PixelMetadata], size: CGSize) {
         Self.update(metadata: metadata, pixel: rootPixel, pix: pix, size: size)
