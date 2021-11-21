@@ -13,19 +13,28 @@ public struct PixelPolygon: Pixel {
     
     public let pixType: PIXType = .content(.generator(.polygon))
     
-    public var metadata: [String : PixelMetadata]
+    public var metadata: [String : PixelMetadata] = [:]
     
     public var pixelTree: PixelTree
     
-    enum Key: String {
+    enum Key: String, CaseIterable {
         case count
+        case radius
     }
     
-    public init(count: Int) {
-        metadata = [
-            Key.count.rawValue : count,
-        ]
+    public init(count: Int,
+                radius: CGFloat = 0.5) {
+
         pixelTree = .content
+
+        for key in Key.allCases {
+            switch key {
+            case .count:
+                metadata[key.rawValue] = count
+            case .radius:
+                metadata[key.rawValue] = radius
+            }
+        }
     }
     
     public func value(at key: String, pix: PIX) -> PixelMetadata? {
@@ -37,12 +46,14 @@ public struct PixelPolygon: Pixel {
         switch key {
         case .count:
             return pix.count
+        case .radius:
+            return pix.radius
         }
     }
     
     public func update(metadata: [String : PixelMetadata], pix: PIX) {
         
-        guard let pix = pix as? Pix else { return }
+        guard var pix = pix as? Pix else { return }
         
         for (key, value) in metadata {
         
@@ -50,8 +61,9 @@ public struct PixelPolygon: Pixel {
             
             switch key {
             case .count:
-                guard let value = value as? Int else { continue }
-                pix.count = value
+                Pixels.updateValue(pix: &pix, value: value, at: \.count)
+            case .radius:
+                Pixels.updateValue(pix: &pix, value: value, at: \.radius)
             }
         }
     }

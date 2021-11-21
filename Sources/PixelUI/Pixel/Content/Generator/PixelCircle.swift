@@ -15,17 +15,22 @@ public struct PixelCircle: Pixel {
     
     public var pixelTree: PixelTree
     
-    public let metadata: [String : PixelMetadata]
+    public var metadata: [String : PixelMetadata] = [:]
     
-    enum Key: String {
+    enum Key: String, CaseIterable {
         case radius
     }
     
     public init(radius: CGFloat = 0.5) {
-        metadata = [
-            Key.radius.rawValue : radius,
-        ]
+
         pixelTree = .content
+        
+        for key in Key.allCases {
+            switch key {
+            case .radius:
+                metadata[key.rawValue] = radius
+            }
+        }
     }
     
     public func value(at key: String, pix: PIX) -> PixelMetadata? {
@@ -42,7 +47,7 @@ public struct PixelCircle: Pixel {
     
     public func update(metadata: [String : PixelMetadata], pix: PIX) {
         
-        guard let pix = pix as? Pix else { return }
+        guard var pix = pix as? Pix else { return }
         
         for (key, value) in metadata {
         
@@ -50,8 +55,7 @@ public struct PixelCircle: Pixel {
             
             switch key {
             case .radius:
-                guard let value = value as? CGFloat else { continue }
-                pix.radius = value
+                Pixels.updateValue(pix: &pix, value: value, at: \.radius)
             }
         }
     }

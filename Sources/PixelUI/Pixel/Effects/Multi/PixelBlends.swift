@@ -16,18 +16,23 @@ public struct PixelBlends: Pixel {
     
     public var pixelTree: PixelTree
     
-    public var metadata: [String : PixelMetadata]
+    public var metadata: [String : PixelMetadata] = [:]
     
-    enum Key: String {
+    enum Key: String, CaseIterable {
         case blendMode
     }
     
     public init(mode blendMode: RenderKit.BlendMode,
                 @PixelBuilder pixels: () -> [Pixel]) {
-        metadata = [
-            Key.blendMode.rawValue : blendMode.rawValue,
-        ]
+
         pixelTree = .multiEffect(pixels())
+        
+        for key in Key.allCases {
+            switch key {
+            case .blendMode:
+                metadata[key.rawValue] = blendMode.rawValue
+            }
+        }
     }
     
     public func value(at key: String, pix: PIX) -> PixelMetadata? {
@@ -44,7 +49,7 @@ public struct PixelBlends: Pixel {
     
     public func update(metadata: [String : PixelMetadata], pix: PIX) {
         
-        guard let pix = pix as? Pix else { return }
+        guard var pix = pix as? Pix else { return }
         
         for (key, value) in metadata {
             
@@ -52,9 +57,7 @@ public struct PixelBlends: Pixel {
         
             switch key {
             case .blendMode:
-                guard let rawValue = value as? String else { continue }
-                guard let value = RenderKit.BlendMode(rawValue: rawValue) else { continue }
-                pix.blendMode = value
+                Pixels.updateRawValue(pix: &pix, value: value, at: \.blendMode)
             }
         }
     }

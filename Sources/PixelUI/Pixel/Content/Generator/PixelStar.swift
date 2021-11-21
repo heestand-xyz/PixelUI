@@ -13,19 +13,24 @@ public struct PixelStar: Pixel {
     
     public let pixType: PIXType = .content(.generator(.star))
     
-    public var metadata: [String : PixelMetadata]
+    public var metadata: [String : PixelMetadata] = [:]
     
     public var pixelTree: PixelTree
     
-    enum Key: String {
+    enum Key: String, CaseIterable {
         case count
     }
     
     public init(count: Int) {
-        metadata = [
-            Key.count.rawValue : count,
-        ]
+
         pixelTree = .content
+
+        for key in Key.allCases {
+            switch key {
+            case .count:
+                metadata[key.rawValue] = count
+            }
+        }
     }
     
     public func value(at key: String, pix: PIX) -> PixelMetadata? {
@@ -42,7 +47,7 @@ public struct PixelStar: Pixel {
     
     public func update(metadata: [String : PixelMetadata], pix: PIX) {
         
-        guard let pix = pix as? Pix else { return }
+        guard var pix = pix as? Pix else { return }
         
         for (key, value) in metadata {
             
@@ -50,8 +55,7 @@ public struct PixelStar: Pixel {
         
             switch key {
             case .count:
-                guard let value = value as? Int else { continue }
-                pix.count = value
+                Pixels.updateValue(pix: &pix, value: value, at: \.count)
             }
         }
     }

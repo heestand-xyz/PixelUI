@@ -16,9 +16,9 @@ public struct PixelBlur: Pixel {
     
     public var pixelTree: PixelTree
     
-    public let metadata: [String : PixelMetadata]
+    public var metadata: [String : PixelMetadata] = [:]
     
-    enum Key: String {
+    enum Key: String, CaseIterable {
         case style
         case radius
         case angle
@@ -32,14 +32,23 @@ public struct PixelBlur: Pixel {
          position: CGPoint = .zero,
          quality: PIX.SampleQualityMode = .default,
          pixel: () -> (Pixel)) {
-        metadata = [
-            Key.style.rawValue : style.rawValue,
-            Key.radius.rawValue : radius,
-            Key.angle.rawValue : angle,
-            Key.position.rawValue : position,
-            Key.quality.rawValue : quality.rawValue,
-        ]
+        
         pixelTree = .singleEffect(pixel())
+        
+        for key in Key.allCases {
+            switch key {
+            case .style:
+                metadata[key.rawValue] = style.rawValue
+            case .radius:
+                metadata[key.rawValue] = radius
+            case .angle:
+                metadata[key.rawValue] = angle
+            case .position:
+                metadata[key.rawValue] = position
+            case .quality:
+                metadata[key.rawValue] = quality.rawValue
+            }
+        }
     }
     
     public func value(at key: String, pix: PIX) -> PixelMetadata? {
