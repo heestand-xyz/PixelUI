@@ -122,7 +122,7 @@ public extension Pixel {
 
 struct PixelBlur_Previews: PreviewProvider {
     static var previews: some View {
-        Pixels(resolution: ._1024) {
+        Pixels {
             PixelCircle(radius: 100)
                 .pixelBlur(radius: 0.1)
         }

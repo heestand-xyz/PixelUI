@@ -16,7 +16,7 @@ public struct PixelPolygon: Pixel {
     
     public var metadata: [String : PixelMetadata] = [:]
     
-    public var pixelTree: PixelTree
+    public let pixelTree: PixelTree = .content
     
     enum Key: String, CaseIterable {
         case count
@@ -30,8 +30,6 @@ public struct PixelPolygon: Pixel {
     
     public init(count: Int,
                 radius: CGFloat) {
-
-        pixelTree = .content
 
         for key in Key.allCases {
             switch key {
@@ -117,22 +115,22 @@ public extension PixelPolygon {
         return pixel
     }
     
-    func pixelColor(_ color: PixelColor) -> Self {
+    func pixelColor(_ color: Color) -> Self {
         var pixel = self
-        pixel.metadata[Key.color.rawValue] = color
+        pixel.metadata[Key.color.rawValue] = PixelColor(color)
         return pixel
     }
     
-    func pixelBackgroundColor(_ color: PixelColor) -> Self {
+    func pixelBackgroundColor(_ color: Color) -> Self {
         var pixel = self
-        pixel.metadata[Key.backgroundColor.rawValue] = color
+        pixel.metadata[Key.backgroundColor.rawValue] = PixelColor(color)
         return pixel
     }
 }
 
 struct PixelPolygon_Previews: PreviewProvider {
     static var previews: some View {
-        Pixels(resolution: ._1024) {
+        Pixels {
             PixelPolygon(count: 3, radius: 100)
         }
     }

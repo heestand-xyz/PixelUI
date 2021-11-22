@@ -65,7 +65,7 @@ public struct PixelBlends: Pixel {
 
 struct PixelBlends_Previews: PreviewProvider {
     static var previews: some View {
-        Pixels(resolution: ._1024) {
+        Pixels {
             PixelBlends(mode: .average) {
                 PixelCircle(radius: 100)
                 PixelPolygon(count: 3, radius: 100)

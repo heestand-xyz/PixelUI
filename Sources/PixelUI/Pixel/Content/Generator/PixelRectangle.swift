@@ -8,32 +8,31 @@ import SwiftUI
 import Resolution
 import PixelColor
 
-public struct PixelCircle: Pixel {
+public struct PixelRectangle: Pixel {
     
-    typealias Pix = CirclePIX
+    typealias Pix = RectanglePIX
     
-    public let pixType: PIXType = .content(.generator(.circle))
+    public let pixType: PIXType = .content(.generator(.rectangle))
     
     public let pixelTree: PixelTree = .content
     
     public var metadata: [String : PixelMetadata] = [:]
     
     enum Key: String, CaseIterable {
-        case radius
+        case size
         case position
+        case cornerRadius
         case color
         case backgroundColor
-        case edgeRadius
-        case edgeColor
     }
     
-    public init(radius: CGFloat) {
-
+    public init(size: CGSize) {
+    
         for key in Key.allCases {
             switch key {
-            case .radius:
-                metadata[key.rawValue] = radius
-            case .position, .color, .backgroundColor, .edgeRadius, .edgeColor:
+            case .size:
+                metadata[key.rawValue] = size
+            case .position, .cornerRadius, .color, .backgroundColor:
                 continue
             }
         }
@@ -46,18 +45,16 @@ public struct PixelCircle: Pixel {
         guard let key = Key(rawValue: key) else { return nil }
         
         switch key {
-        case .radius:
-            return Pixels.inViewSpace(pix.radius, size: size)
+        case .size:
+            return Pixels.inViewSpace(pix.size, size: size)
         case .position:
             return Pixels.inViewSpace(pix.position, size: size)
+        case .cornerRadius:
+            return Pixels.inViewSpace(pix.cornerRadius, size: size)
         case .color:
             return pix.color
         case .backgroundColor:
             return pix.backgroundColor
-        case .edgeRadius:
-            return Pixels.inViewSpace(pix.edgeRadius, size: size)
-        case .edgeColor:
-            return pix.edgeColor
         }
     }
     
@@ -70,28 +67,32 @@ public struct PixelCircle: Pixel {
             guard let key = Key(rawValue: key) else { continue }
             
             switch key {
-            case .radius:
-                Pixels.updateValueInPixelSpace(pix: &pix, value: value, size: size, at: \.radius)
+            case .size:
+                Pixels.updateValueInPixelSpace(pix: &pix, value: value, size: size, at: \.size)
             case .position:
                 Pixels.updateValueInPixelSpace(pix: &pix, value: value, size: size, at: \.position)
+            case .cornerRadius:
+                Pixels.updateValueInPixelSpace(pix: &pix, value: value, size: size, at: \.cornerRadius)
             case .color:
                 Pixels.updateValue(pix: &pix, value: value, at: \.color)
             case .backgroundColor:
                 Pixels.updateValue(pix: &pix, value: value, at: \.backgroundColor)
-            case .edgeRadius:
-                Pixels.updateValueInPixelSpace(pix: &pix, value: value, size: size, at: \.edgeRadius)
-            case .edgeColor:
-                Pixels.updateValue(pix: &pix, value: value, at: \.edgeColor)
             }
         }
     }
 }
 
-public extension PixelCircle {
+public extension PixelRectangle {
     
     func pixelOffset(x: CGFloat = 0.0, y: CGFloat = 0.0) -> Self {
         var pixel = self
         pixel.metadata[Key.position.rawValue] = CGPoint(x: x, y: y)
+        return pixel
+    }
+    
+    func pixelCornerRadius(_ value: CGFloat) -> Self {
+        var pixel = self
+        pixel.metadata[Key.cornerRadius.rawValue] = value
         return pixel
     }
     
@@ -106,19 +107,12 @@ public extension PixelCircle {
         pixel.metadata[Key.backgroundColor.rawValue] = PixelColor(color)
         return pixel
     }
-    
-    func pixelEdge(radius: CGFloat, color: Color) -> Self {
-        var pixel = self
-        pixel.metadata[Key.edgeRadius.rawValue] = radius
-        pixel.metadata[Key.edgeColor.rawValue] = PixelColor(color)
-        return pixel
-    }
 }
 
-struct PixelCircle_Previews: PreviewProvider {
+struct PixelRectangle_Previews: PreviewProvider {
     static var previews: some View {
         Pixels {
-            PixelCircle(radius: 0.25)
+            PixelRectangle(size: CGSize(width: 100, height: 100))
         }
     }
 }

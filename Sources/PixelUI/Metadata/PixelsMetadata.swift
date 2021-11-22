@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreGraphics
 import PixelKit
 
 public struct PixelsMetadata {

@@ -16,7 +16,7 @@ public struct PixelStar: Pixel {
     
     public var metadata: [String : PixelMetadata] = [:]
     
-    public var pixelTree: PixelTree
+    public let pixelTree: PixelTree = .content
     
     enum Key: String, CaseIterable {
         case count
@@ -32,8 +32,6 @@ public struct PixelStar: Pixel {
     public init(count: Int,
                 radius leadingRadius: CGFloat,
                 innerRadius trailingRadius: CGFloat? = nil) {
-
-        pixelTree = .content
 
         for key in Key.allCases {
             switch key {
@@ -125,22 +123,22 @@ public extension PixelStar {
         return pixel
     }
     
-    func pixelColor(_ color: PixelColor) -> Self {
+    func pixelColor(_ color: Color) -> Self {
         var pixel = self
-        pixel.metadata[Key.color.rawValue] = color
+        pixel.metadata[Key.color.rawValue] = PixelColor(color)
         return pixel
     }
     
-    func pixelBackgroundColor(_ color: PixelColor) -> Self {
+    func pixelBackgroundColor(_ color: Color) -> Self {
         var pixel = self
-        pixel.metadata[Key.backgroundColor.rawValue] = color
+        pixel.metadata[Key.backgroundColor.rawValue] = PixelColor(color)
         return pixel
     }
 }
 
 struct PixelStar_Previews: PreviewProvider {
     static var previews: some View {
-        Pixels(resolution: ._1024) {
+        Pixels {
             PixelStar(count: 5, radius: 100, innerRadius: 50)
         }
     }
