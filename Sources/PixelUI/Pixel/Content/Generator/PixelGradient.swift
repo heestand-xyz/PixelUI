@@ -32,6 +32,10 @@ public struct PixelGradient: Pixel {
     
     enum Key: String, CaseIterable {
         case direction
+        case scale
+        case offset
+        case gamma
+        case extendMode
         case position
     }
     
@@ -50,7 +54,7 @@ public struct PixelGradient: Pixel {
             switch key {
             case .direction:
                 metadata[key.rawValue] = direction.rawValue
-            case .position:
+            case .scale, .offset, .gamma, .extendMode, .position:
                 continue
             }
         }
@@ -76,6 +80,14 @@ public struct PixelGradient: Pixel {
         switch key {
         case .direction:
             return pix.direction.rawValue
+        case .scale:
+            return pix.scale
+        case .offset:
+            return pix.offset
+        case .gamma:
+            return pix.gamma
+        case .extendMode:
+            return pix.extendMode.rawValue
         case .position:
             return Pixels.inViewSpace(pix.position, size: size)
         }
@@ -112,6 +124,14 @@ public struct PixelGradient: Pixel {
             switch key {
             case .direction:
                 Pixels.updateRawValue(pix: &pix, value: value, at: \.direction)
+            case .scale:
+                Pixels.updateValue(pix: &pix, value: value, at: \.scale)
+            case .offset:
+                Pixels.updateValue(pix: &pix, value: value, at: \.offset)
+            case .gamma:
+                Pixels.updateValue(pix: &pix, value: value, at: \.gamma)
+            case .extendMode:
+                Pixels.updateRawValue(pix: &pix, value: value, at: \.extendMode)
             case .position:
                 Pixels.updateValueInPixelSpace(pix: &pix, value: value, size: size, at: \.position)
             }
@@ -124,6 +144,30 @@ public extension PixelGradient {
     func pixelOffset(x: CGFloat = 0.0, y: CGFloat = 0.0) -> Self {
         var pixel = self
         pixel.metadata[Key.position.rawValue] = CGPoint(x: x, y: y)
+        return pixel
+    }
+    
+    func pixelGradientScale(_ scale: CGFloat) -> Self {
+        var pixel = self
+        pixel.metadata[Key.scale.rawValue] = scale
+        return pixel
+    }
+    
+    func pixelGradientOffset(_ offset: CGFloat) -> Self {
+        var pixel = self
+        pixel.metadata[Key.offset.rawValue] = offset
+        return pixel
+    }
+    
+    func pixelGradientGamma(_ gamma: CGFloat) -> Self {
+        var pixel = self
+        pixel.metadata[Key.gamma.rawValue] = gamma
+        return pixel
+    }
+    
+    func pixelGradientExtend(_ extendMode: ExtendMode) -> Self {
+        var pixel = self
+        pixel.metadata[Key.extendMode.rawValue] = extendMode.rawValue
         return pixel
     }
 }
