@@ -13,9 +13,9 @@ import Resolution
 extension Pixels {
     
     static func update(metadata: [PixelsMetadata.Key: PixelMetadata],
-                               pixel: Pixel,
-                               pix: PIX,
-                               size: CGSize) {
+                       pixel: Pixel,
+                       pix: PIX,
+                       size: CGSize) {
         
         var localMetadata: [String: PixelMetadata] = [:]
         for (key, value) in metadata {
@@ -53,6 +53,17 @@ extension Pixels {
                 guard let inputPix: PIX = inputNode as? PIX else { continue }
                 Self.update(metadata: metadata, pixel: pixel, pix: inputPix, size: size)
             }
+            
+        case .feedback(let pixel, let feedbackPixel):
+            
+            guard let feedbackPix = pix as? FeedbackPIX else { return }
+            
+            guard let inputPix: PIX = feedbackPix.input as? PIX else { return }
+            guard let feedbackInputPix: PIX = feedbackPix.feedbackInput else { return }
+            #warning("Loop")
+            
+            Self.update(metadata: metadata, pixel: pixel, pix: inputPix, size: size)
+            Self.update(metadata: metadata, pixel: feedbackPixel, pix: feedbackInputPix, size: size)
         }
     }
     
@@ -89,6 +100,17 @@ extension Pixels {
                 guard let inputPix: PIX = inputNode as? PIX else { continue }
                 Self.update(resolution: resolution, pixel: pixel, pix: inputPix)
             }
+            
+        case .feedback(let pixel, let feedbackPixel):
+                
+            guard let feedbackPix = pix as? FeedbackPIX else { return }
+            
+            guard let inputPix: PIX = feedbackPix.input as? PIX else { return }
+            guard let feedbackInputPix: PIX = feedbackPix.feedbackInput else { return }
+            #warning("Loop")
+            
+            Self.update(resolution: resolution, pixel: pixel, pix: inputPix)
+            Self.update(resolution: resolution, pixel: feedbackPixel, pix: feedbackInputPix)
         }
     }
 }

@@ -62,6 +62,21 @@ public struct PixelsMetadata {
                     allMetadata[key] = value
                 }
             }
+            
+        case .feedback(let pixel, let feedbackPixel):
+
+            guard let mergerEffectPix = pix as? FeedbackPIX else { break }
+
+            guard let inputPix: PIX = mergerEffectPix.input as? PIX else { break }
+            guard let feedbackInputPix: PIX = mergerEffectPix.feedbackInput else { break }
+            #warning("Loop")
+
+            for (key, value) in Self.pixelMetadata(pixel: pixel, pix: inputPix) {
+                allMetadata[key] = value
+            }
+            for (key, value) in Self.pixelMetadata(pixel: feedbackPixel, pix: feedbackInputPix) {
+                allMetadata[key] = value
+            }
         }
         
         return allMetadata
@@ -112,6 +127,21 @@ public struct PixelsMetadata {
                 for (key, value) in Self.pixMetadata(pixel: pixel, pix: inputPix, size: size) {
                     allMetadata[key] = value
                 }
+            }
+            
+        case .feedback(let pixel, let feedbackPixel):
+
+            guard let mergerEffectPix = pix as? FeedbackPIX else { break }
+
+            guard let inputPix: PIX = mergerEffectPix.input as? PIX else { break }
+            guard let feedbackInputPix: PIX = mergerEffectPix.feedbackInput else { break }
+            #warning("Loop")
+
+            for (key, value) in Self.pixMetadata(pixel: pixel, pix: inputPix, size: size) {
+                allMetadata[key] = value
+            }
+            for (key, value) in Self.pixMetadata(pixel: feedbackPixel, pix: feedbackInputPix, size: size) {
+                allMetadata[key] = value
             }
         }
         

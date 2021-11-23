@@ -33,7 +33,7 @@ struct PixelsView: ViewRepresentable {
         rootPixel = pixel
         self.size = size
         self.resolution = resolution
-        _pix = StateObject(wrappedValue: Pixels.pix(for: pixel, at: resolution))
+        _pix = StateObject(wrappedValue: Pixels.createPix(for: pixel, at: resolution))
     }
     
     func makeView(context: Context) -> PIXView {

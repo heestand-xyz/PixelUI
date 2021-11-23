@@ -15,4 +15,6 @@ public indirect enum PixelTree {
     case singleEffect(Pixel)
     case mergerEffect(Pixel, Pixel)
     case multiEffect([Pixel])
+    
+    case feedback(Pixel, Pixel)
 }
