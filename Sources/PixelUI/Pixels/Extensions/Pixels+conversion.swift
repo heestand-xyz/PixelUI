@@ -22,8 +22,8 @@ extension Pixels {
     }
     
     static func inViewSpace(_ value: CGPoint, size: CGSize) -> CGPoint {
-        CGPoint(x: value.x * size.height,
-                y: -value.y * size.height)
+        CGPoint(x: value.x * size.height + size.width / 2,
+                y: -value.y * size.height + size.height / 2)
     }
     
     static func inViewSpace(_ value: CGSize, size: CGSize) -> CGSize {
@@ -39,8 +39,8 @@ extension Pixels {
     }
     
     static func inPixelSpace(_ value: CGPoint, size: CGSize) -> CGPoint {
-        CGPoint(x: value.x / size.height,
-                y: -value.y / size.height)
+        CGPoint(x: (value.x - size.width / 2) / size.height,
+                y: -(value.y - size.height / 2) / size.height)
     }
     
     static func inPixelSpace(_ value: CGSize, size: CGSize) -> CGSize {

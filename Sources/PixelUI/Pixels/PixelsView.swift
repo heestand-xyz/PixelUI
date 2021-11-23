@@ -29,6 +29,7 @@ struct PixelsView: ViewRepresentable {
     @State var timer: Timer?
     
     init(resolution: Resolution, size: CGSize, pixel: @escaping () -> (Pixel)) {
+        print("Pixels Init")
         let pixel = pixel()
         rootPixel = pixel
         self.size = size
@@ -52,6 +53,7 @@ struct PixelsView: ViewRepresentable {
         }
         
         if resolution != Self.lastResolution[pix.id] {
+            print("Pixels Resolution", resolution)
             Pixels.update(resolution: resolution, pixel: rootPixel, pix: pix)
         }
         
