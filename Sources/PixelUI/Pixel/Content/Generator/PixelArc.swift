@@ -8,11 +8,11 @@ import SwiftUI
 import Resolution
 import PixelColor
 
-public struct PixelCircle: Pixel {
+public struct PixelArc: Pixel {
     
-    typealias Pix = CirclePIX
+    typealias Pix = ArcPIX
     
-    public let pixType: PIXType = .content(.generator(.circle))
+    public let pixType: PIXType = .content(.generator(.arc))
     
     public let pixelTree: PixelTree = .content
     
@@ -21,19 +21,28 @@ public struct PixelCircle: Pixel {
     enum Key: String, CaseIterable {
         case radius
         case position
+        case angleFrom
+        case angleTo
+        case angleOffset
         case color
         case backgroundColor
         case edgeRadius
         case edgeColor
     }
     
-    public init(radius: CGFloat) {
+    public init(radius: CGFloat,
+                leadingAngle angleFrom: Angle,
+                tralingAngle angleTo: Angle) {
 
         for key in Key.allCases {
             switch key {
             case .radius:
                 metadata[key.rawValue] = radius
-            case .position, .color, .backgroundColor, .edgeRadius, .edgeColor:
+            case .angleFrom:
+                metadata[key.rawValue] = angleFrom
+            case .angleTo:
+                metadata[key.rawValue] = angleTo
+            case .position, .color, .angleOffset, .backgroundColor, .edgeRadius, .edgeColor:
                 continue
             }
         }
@@ -50,6 +59,12 @@ public struct PixelCircle: Pixel {
             return Pixels.inViewSpace(pix.radius, size: size)
         case .position:
             return Pixels.inViewSpace(pix.position, size: size)
+        case .angleFrom:
+            return Pixels.asAngle(pix.angleFrom)
+        case .angleTo:
+            return Pixels.asAngle(pix.angleTo)
+        case .angleOffset:
+            return Pixels.asAngle(pix.angleOffset)
         case .color:
             return pix.color
         case .backgroundColor:
@@ -74,6 +89,12 @@ public struct PixelCircle: Pixel {
                 Pixels.updateValueInPixelSpace(pix: &pix, value: value, size: size, at: \.radius)
             case .position:
                 Pixels.updateValueInPixelSpace(pix: &pix, value: value, size: size, at: \.position)
+            case .angleFrom:
+                Pixels.updateValueAngle(pix: &pix, value: value, at: \.angleFrom)
+            case .angleTo:
+                Pixels.updateValueAngle(pix: &pix, value: value, at: \.angleTo)
+            case .angleOffset:
+                Pixels.updateValueAngle(pix: &pix, value: value, at: \.angleOffset)
             case .color:
                 Pixels.updateValue(pix: &pix, value: value, at: \.color)
             case .backgroundColor:
@@ -87,11 +108,17 @@ public struct PixelCircle: Pixel {
     }
 }
 
-public extension PixelCircle {
+public extension PixelArc {
     
     func pixelOffset(x: CGFloat = 0.0, y: CGFloat = 0.0) -> Self {
         var pixel = self
         pixel.metadata[Key.position.rawValue] = CGPoint(x: x, y: y)
+        return pixel
+    }
+    
+    func pixelRotation(_ angle: Angle) -> Self {
+        var pixel = self
+        pixel.metadata[Key.angleOffset.rawValue] = angle
         return pixel
     }
     
@@ -115,10 +142,10 @@ public extension PixelCircle {
     }
 }
 
-struct PixelCircle_Previews: PreviewProvider {
+struct PixelArc_Previews: PreviewProvider {
     static var previews: some View {
         Pixels {
-            PixelCircle(radius: 50)
+            PixelArc(radius: 50, leadingAngle: .zero, tralingAngle: Angle(degrees: 90))
         }
     }
 }

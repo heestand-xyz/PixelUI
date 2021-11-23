@@ -131,7 +131,7 @@ public extension PixelPolygon {
 struct PixelPolygon_Previews: PreviewProvider {
     static var previews: some View {
         Pixels {
-            PixelPolygon(count: 3, radius: 100)
+            PixelPolygon(count: 3, radius: 50)
         }
     }
 }
