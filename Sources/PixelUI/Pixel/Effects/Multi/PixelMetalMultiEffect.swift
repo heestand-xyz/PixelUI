@@ -9,21 +9,34 @@ import SwiftUI
 import Resolution
 import PixelColor
 
-/// Pixel Metal
+/// Pixel Metal Multi Effect
 ///
-/// **Variables:** pi, u, v, uv, var.resx, var.height, var.aspect, var.your-variable-name
+/// **Variables:** pi, u, v, uv, pixCount, texs, var.width, var.height, var.aspect, var.your-varaible-name
 ///
 /// Example:
-/// ```metal
-/// return float4(u, v, 0.0, 1.0);
+/// ```swift
+/// Pixels {
+///     PixelMetalMultiEffect(code:
+///         """
+///         float4 pixA = texs.sample(s, uv, 0);
+///         float4 pixB = texs.sample(s, uv, 1);
+///         float4 pixC = texs.sample(s, uv, 2);
+///         return pixA + pixB + pixC;
+///         """
+///     ) {
+///         PixelCircle(radius: 50)
+///         PixelStar(count: 5, radius: 50)
+///         PixelPolygon(count: 3, radius: 50)
+///     }
+/// }
 /// ```
-public struct PixelMetal: Pixel {
+public struct PixelMetalMultiEffect: Pixel {
     
-    typealias Pix = MetalPIX
+    typealias Pix = MetalMultiEffectPIX
     
-    public let pixType: PIXType = .content(.generator(.metal))
+    public let pixType: PIXType = .effect(.multi(.metalMultiEffect))
     
-    public let pixelTree: PixelTree = .content
+    public let pixelTree: PixelTree
     
     public var metadata: [String : PixelMetadata] = [:]
     
@@ -32,7 +45,10 @@ public struct PixelMetal: Pixel {
     }
     
     public init(variables: [PixelVariable] = [],
-                code: String) {
+                code: String,
+                @PixelBuilder pixels: () -> [Pixel]) {
+        
+        pixelTree = .multiEffect(pixels())
 
         for (index, variable) in variables.enumerated() {
             metadata["variable-\(index)"] = variable
@@ -94,10 +110,21 @@ public struct PixelMetal: Pixel {
     }
 }
 
-struct PixelMetal_Previews: PreviewProvider {
+struct PixelMetalMultiEffect_Previews: PreviewProvider {
     static var previews: some View {
         Pixels {
-            PixelMetal(code: "return float4(1.0, 0.5, 0.0, 1.0);")
+            PixelMetalMultiEffect(code:
+                """
+                float4 pixA = texs.sample(s, uv, 0);
+                float4 pixB = texs.sample(s, uv, 1);
+                float4 pixC = texs.sample(s, uv, 2);
+                return pixA + pixB + pixC;
+                """
+            ) {
+                PixelCircle(radius: 50)
+                PixelStar(count: 5, radius: 50)
+                PixelPolygon(count: 3, radius: 50)
+            }
         }
     }
 }

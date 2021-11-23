@@ -9,21 +9,35 @@ import SwiftUI
 import Resolution
 import PixelColor
 
-/// Pixel Metal
+/// Pixel Metal Merger Effect
 ///
-/// **Variables:** pi, u, v, uv, var.resx, var.height, var.aspect, var.your-variable-name
+/// **Variables:** pi, u, v, uv, wA, hA, wuA, hvA, wB, hB, wuB, hvB, texA, texB, pixA, pixB, var.width, var.height, var.aspect, var.your-variable-name
+///
+/// ```metal
+/// float4 pixA = pixA.sample(s, uv);
+/// ```
 ///
 /// Example:
-/// ```metal
-/// return float4(u, v, 0.0, 1.0);
+/// ```swift
+/// Pixels {
+///     PixelMetalMergerEffect(code:
+///         """
+///         return pow(pixA, 1.0 / pixB);
+///         """
+///     ) {
+///         PixelCamera()
+///     } withPixel: {
+///         PixelCircle(radius: 100)
+///     }
+/// }
 /// ```
-public struct PixelMetal: Pixel {
+public struct PixelMetalMergerEffect: Pixel {
     
-    typealias Pix = MetalPIX
+    typealias Pix = MetalMergerEffectPIX
     
-    public let pixType: PIXType = .content(.generator(.metal))
+    public let pixType: PIXType = .effect(.merger(.metalMergerEffect))
     
-    public let pixelTree: PixelTree = .content
+    public let pixelTree: PixelTree
     
     public var metadata: [String : PixelMetadata] = [:]
     
@@ -32,7 +46,11 @@ public struct PixelMetal: Pixel {
     }
     
     public init(variables: [PixelVariable] = [],
-                code: String) {
+                code: String,
+                pixel leadingPixel: () -> Pixel,
+                withPixel trailingPixel: () -> Pixel) {
+        
+        pixelTree = .mergerEffect(leadingPixel(), trailingPixel())
 
         for (index, variable) in variables.enumerated() {
             metadata["variable-\(index)"] = variable
@@ -94,10 +112,14 @@ public struct PixelMetal: Pixel {
     }
 }
 
-struct PixelMetal_Previews: PreviewProvider {
+struct PixelMetalMergerEffect_Previews: PreviewProvider {
     static var previews: some View {
         Pixels {
-            PixelMetal(code: "return float4(1.0, 0.5, 0.0, 1.0);")
+            PixelMetalMergerEffect(code: "return pixA + pixB;") {
+                PixelPolygon(count: 3, radius: 50)
+            } withPixel: {
+                PixelStar(count: 5, radius: 50)
+            }
         }
     }
 }

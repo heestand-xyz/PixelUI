@@ -9,21 +9,30 @@ import SwiftUI
 import Resolution
 import PixelColor
 
-/// Pixel Metal
+/// Pixel Metal Effect
 ///
-/// **Variables:** pi, u, v, uv, var.resx, var.height, var.aspect, var.your-variable-name
+/// **Variables:** pi, u, v, uv, w, h, wu, hv, tex, pix, var.width, var.height, var.aspect, var.your-variable-name
 ///
 /// Example:
-/// ```metal
-/// return float4(u, v, 0.0, 1.0);
+/// ```swift
+/// Pixels {
+///     PixelMetalEffect(code:
+///         """
+///         float gamma = 0.25;
+///         return pow(pix, 1.0 / gamma);
+///         """
+///     ) {
+///         PixelCamera()
+///     }
+/// }
 /// ```
-public struct PixelMetal: Pixel {
+public struct PixelMetalEffect: Pixel {
     
-    typealias Pix = MetalPIX
+    typealias Pix = MetalEffectPIX
     
-    public let pixType: PIXType = .content(.generator(.metal))
+    public let pixType: PIXType = .effect(.single(.metalEffect))
     
-    public let pixelTree: PixelTree = .content
+    public let pixelTree: PixelTree
     
     public var metadata: [String : PixelMetadata] = [:]
     
@@ -32,7 +41,10 @@ public struct PixelMetal: Pixel {
     }
     
     public init(variables: [PixelVariable] = [],
-                code: String) {
+                code: String,
+                pixel: () -> Pixel) {
+        
+        pixelTree = .singleEffect(pixel())
 
         for (index, variable) in variables.enumerated() {
             metadata["variable-\(index)"] = variable
@@ -94,10 +106,12 @@ public struct PixelMetal: Pixel {
     }
 }
 
-struct PixelMetal_Previews: PreviewProvider {
+struct PixelMetalEffect_Previews: PreviewProvider {
     static var previews: some View {
         Pixels {
-            PixelMetal(code: "return float4(1.0, 0.5, 0.0, 1.0);")
+            PixelMetalEffect(code: "return pix;") {
+                PixelCircle(radius: 50)
+            }
         }
     }
 }

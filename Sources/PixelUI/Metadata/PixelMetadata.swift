@@ -124,3 +124,17 @@ extension String: PixelMetadata {
         return fraction == 0.0 ? self : value
     }
 }
+
+extension PixelVariable: PixelMetadata {
+    
+    public func isEqual(to value: PixelMetadata) -> Bool {
+        guard let value = value as? Self else { return false }
+        return self.name == value.name && self.value == value.value
+    }
+    
+    public func interpolate(at fraction: CGFloat, to value: PixelMetadata) -> PixelMetadata {
+        guard let value = value as? Self else { return self }
+        return PixelVariable(name: fraction == 0.0 ? self.name : value.name,
+                             value: self.value * (1.0 - fraction) + value.value * fraction)
+    }
+}
