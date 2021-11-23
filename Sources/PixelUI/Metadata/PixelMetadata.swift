@@ -17,6 +17,19 @@ public protocol PixelMetadata {
     func interpolate(at fraction: CGFloat, to value: PixelMetadata) -> PixelMetadata
 }
 
+extension Bool: PixelMetadata {
+    
+    public func isEqual(to value: PixelMetadata) -> Bool {
+        guard let value = value as? Self else { return false }
+        return self == value
+    }
+    
+    public func interpolate(at fraction: CGFloat, to value: PixelMetadata) -> PixelMetadata {
+        guard let value = value as? Self else { return self }
+        return fraction == 0.0 ? self : value
+    }
+}
+
 extension Int: PixelMetadata {
     
     public func isEqual(to value: PixelMetadata) -> Bool {

@@ -28,12 +28,12 @@ public struct PixelBlur: Pixel {
         case quality
     }
     
-    init(style: Pix.BlurStyle = .default,
-         radius: CGFloat,
-         angle: Angle = .zero,
-         position: CGPoint = .zero,
-         quality: PIX.SampleQualityMode = .default,
-         pixel: () -> (Pixel)) {
+    internal init(style: Pix.BlurStyle = .default,
+                  radius: CGFloat,
+                  angle: Angle = .zero,
+                  position: CGPoint = .zero,
+                  quality: PIX.SampleQualityMode = .default,
+                  pixel: () -> Pixel) {
         
         pixelTree = .singleEffect(pixel())
         
