@@ -2,37 +2,29 @@
 //  Created by Anton Heestand on 2021-11-22.
 //
 
+#if os(macOS) && !targetEnvironment(macCatalyst)
+
 import Foundation
 import SwiftUI
 import RenderKit
 import PixelKit
 import PixelColor
 
-#warning("Camera Resolution won't work with Blends")
-
-public struct PixelCamera: Pixel {
+public struct PixelScreenCapture: Pixel {
     
-    typealias Pix = CameraPIX
+    typealias Pix = ScreenCapturePIX
     
-    public let pixType: PIXType = .content(.resource(.camera))
+    public let pixType: PIXType = .content(.resource(.screenCapture))
     
     public let pixelTree: PixelTree = .content
     
     public var metadata: [String : PixelMetadata] = [:]
     
     enum Key: String, CaseIterable {
-        case camera
+        case screenIndex
     }
     
-    public init(position camera: CameraPIX.Camera = .default) {
-        
-        for key in Key.allCases {
-            switch key {
-            case .camera:
-                metadata[key.rawValue] = camera.rawValue
-            }
-        }
-    }
+    public init() {}
     
     public func value(at key: String, pix: PIX, size: CGSize) -> PixelMetadata? {
         
@@ -41,8 +33,8 @@ public struct PixelCamera: Pixel {
         guard let key = Key(rawValue: key) else { return nil }
         
         switch key {
-        case .camera:
-            return pix.camera.rawValue
+        case .screenIndex:
+            return pix.screenIndex
         }
     }
     
@@ -55,17 +47,28 @@ public struct PixelCamera: Pixel {
             guard let key = Key(rawValue: key) else { continue }
             
             switch key {
-            case .camera:
-                Pixels.updateRawValue(pix: &pix, value: value, at: \.camera)
+            case .screenIndex:
+                Pixels.updateValue(pix: &pix, value: value, at: \.screenIndex)
             }
         }
     }
 }
 
-struct PixelCamera_Previews: PreviewProvider {
+public extension PixelScreenCapture {
+    
+    func pixelScreenCaptureIndex(_ index: Int) -> Self {
+        var pixel = self
+        pixel.metadata[Key.screenIndex.rawValue] = index
+        return pixel
+    }
+}
+
+struct PixelScreenCapture_Previews: PreviewProvider {
     static var previews: some View {
         Pixels {
-            PixelCamera()
+            PixelScreenCapture()
         }
     }
 }
+
+#endif

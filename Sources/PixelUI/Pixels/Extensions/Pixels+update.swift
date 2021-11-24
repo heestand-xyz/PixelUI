@@ -14,9 +14,18 @@ extension Pixels {
                        pix: PIX,
                        size: CGSize) {
         
+        let pixId = pix.id
+        
+        var pix = pix
+        if pixel.resizeContentResolution {
+            guard let resolutionPix = pix as? ResolutionPIX else { return }
+            guard let inputPix = resolutionPix.input as? PIX else { return }
+            pix = inputPix
+        }
+        
         var localMetadata: [String: PixelMetadata] = [:]
         for (key, value) in metadata {
-            guard key.pixId == pix.id else { continue }
+            guard key.pixId == pixId else { continue }
             localMetadata[key.variable] = value
         }
         pixel.update(metadata: localMetadata, pix: pix, size: size)

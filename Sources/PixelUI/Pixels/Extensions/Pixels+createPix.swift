@@ -15,11 +15,18 @@ extension Pixels {
     
     static func createPix(for pixel: Pixel, at resolution: Resolution) -> (PIX & NODEOut)? {
         
-        guard let pix: PIX & NODEOut = pixel.pixType.pix(at: resolution) as? PIX & NODEOut else { return nil }
+        guard var pix: PIX & NODEOut = pixel.pixType.pix(at: resolution) as? PIX & NODEOut else { return nil }
         
         switch pixel.pixelTree {
         case .content:
-            break
+            
+            if pixel.resizeContentResolution {
+                let resolutionPix = ResolutionPIX(at: resolution)
+                resolutionPix.placement = .fill
+                resolutionPix.input = pix
+                pix = resolutionPix
+            }
+            
         case .singleEffect(let pixel):
             
             guard let singleEffectPix = pix as? PIXSingleEffect else { return nil }

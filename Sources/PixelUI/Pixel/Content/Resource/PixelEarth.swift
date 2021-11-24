@@ -106,13 +106,13 @@ public struct PixelEarth: Pixel {
 
 public extension PixelEarth {
     
-    func pixelEarthShowsBuildings() -> Self {
+    func pixelEarthShowBuildings() -> Self {
         var pixel = self
         pixel.metadata[Key.showsBuildings.rawValue] = true
         return pixel
     }
     
-    func pixelEarthShowsPointsOfInterest() -> Self {
+    func pixelEarthShowPointsOfInterest() -> Self {
         var pixel = self
         pixel.metadata[Key.showsPointsOfInterest.rawValue] = true
         return pixel

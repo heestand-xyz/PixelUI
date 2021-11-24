@@ -15,3 +15,14 @@ public protocol Pixel {
     func value(at key: String, pix: PIX, size: CGSize) -> PixelMetadata?
     func update(metadata: [String: PixelMetadata], pix: PIX, size: CGSize)
 }
+
+extension Pixel {
+    
+    var resizeContentResolution: Bool {
+        [
+            .content(.resource(.camera)),
+            .content(.resource(.image)),
+            .content(.resource(.screenCapture))
+        ].contains(pixType)
+    }
+}

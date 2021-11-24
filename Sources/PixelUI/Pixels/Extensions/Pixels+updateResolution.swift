@@ -16,9 +16,9 @@ extension Pixels {
         switch pixel.pixelTree {
         case .content:
             
-            if let imagePix = pix as? ImagePIX {
-                imagePix.resizePlacement = .crop
-                imagePix.resizeResolution = resolution
+            if pixel.resizeContentResolution {
+                guard let resolutionPix = pix as? ResolutionPIX else { return }
+                resolutionPix.resolution = resolution
             }
             
         case .singleEffect(let pixel):
