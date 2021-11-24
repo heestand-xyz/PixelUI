@@ -38,7 +38,7 @@ struct PixelsView: ViewRepresentable {
         
         Self.lastMetadata[pix.id] = [:]
         Self.lastSize[pix.id] = size
-        Self.lastResolution[pix.id] = resolution
+        Self.lastResolution[pix.id] = nil
         
         return pix.pixView
     }
@@ -46,7 +46,9 @@ struct PixelsView: ViewRepresentable {
     func updateView(_ view: PIXView, context: Context) {
         
         if size != Self.lastSize[pix.id] {
-            Self.lastMetadata[pix.id] = [:]
+            Self.lastMetadata[pix.id] = Dictionary(uniqueKeysWithValues: Array(Self.lastMetadata[pix.id] ?? [:]).filter({ key, value in
+                !value.resolutionUpdate
+            }))
         }
         
         if resolution != Self.lastResolution[pix.id] {

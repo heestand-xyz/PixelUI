@@ -10,11 +10,15 @@ import PixelColor
 
 public protocol PixelMetadata {
         
+    var resolutionUpdate: Bool { get }
+    
     func isEqual(to value: PixelMetadata) -> Bool
     func interpolate(at fraction: CGFloat, to value: PixelMetadata) -> PixelMetadata
 }
 
 extension Bool: PixelMetadata {
+    
+    public var resolutionUpdate: Bool { false }
     
     public func isEqual(to value: PixelMetadata) -> Bool {
         guard let value = value as? Self else { return false }
@@ -29,6 +33,8 @@ extension Bool: PixelMetadata {
 
 extension Int: PixelMetadata {
     
+    public var resolutionUpdate: Bool { false }
+    
     public func isEqual(to value: PixelMetadata) -> Bool {
         guard let value = value as? Self else { return false }
         return self == value
@@ -42,6 +48,8 @@ extension Int: PixelMetadata {
 
 extension CGFloat: PixelMetadata {
     
+    public var resolutionUpdate: Bool { true }
+    
     public func isEqual(to value: PixelMetadata) -> Bool {
         guard let value = value as? Self else { return false }
         return self == value
@@ -54,6 +62,8 @@ extension CGFloat: PixelMetadata {
 }
 
 extension Angle: PixelMetadata {
+    
+    public var resolutionUpdate: Bool { false }
     
     public func isEqual(to value: PixelMetadata) -> Bool {
         guard let value = value as? Self else { return false }
@@ -69,6 +79,8 @@ extension Angle: PixelMetadata {
 
 extension CGPoint: PixelMetadata {
     
+    public var resolutionUpdate: Bool { true }
+    
     public func isEqual(to value: PixelMetadata) -> Bool {
         guard let value = value as? Self else { return false }
         return self == value
@@ -83,6 +95,8 @@ extension CGPoint: PixelMetadata {
 
 extension CGSize: PixelMetadata {
     
+    public var resolutionUpdate: Bool { true }
+    
     public func isEqual(to value: PixelMetadata) -> Bool {
         guard let value = value as? Self else { return false }
         return self == value
@@ -96,6 +110,8 @@ extension CGSize: PixelMetadata {
 }
 
 extension PixelColor: PixelMetadata {
+    
+    public var resolutionUpdate: Bool { false }
     
     public func isEqual(to value: PixelMetadata) -> Bool {
         guard let value = value as? Self else { return false }
@@ -114,6 +130,8 @@ extension PixelColor: PixelMetadata {
 
 extension String: PixelMetadata {
     
+    public var resolutionUpdate: Bool { false }
+    
     public func isEqual(to value: PixelMetadata) -> Bool {
         guard let value = value as? Self else { return false }
         return self == value
@@ -127,6 +145,8 @@ extension String: PixelMetadata {
 
 extension PixelVariable: PixelMetadata {
     
+    public var resolutionUpdate: Bool { true }
+    
     public func isEqual(to value: PixelMetadata) -> Bool {
         guard let value = value as? Self else { return false }
         return self.name == value.name && self.value == value.value
@@ -136,5 +156,21 @@ extension PixelVariable: PixelMetadata {
         guard let value = value as? Self else { return self }
         return PixelVariable(name: fraction == 0.0 ? self.name : value.name,
                              value: self.value * (1.0 - fraction) + value.value * fraction)
+    }
+}
+
+extension FutureImage: PixelMetadata {
+    
+    public var resolutionUpdate: Bool { false }
+    
+    public func isEqual(to value: PixelMetadata) -> Bool {
+        guard value is Self else { return false }
+        #warning("New image will not update")
+        return true
+    }
+    
+    public func interpolate(at fraction: CGFloat, to value: PixelMetadata) -> PixelMetadata {
+        guard let value = value as? Self else { return self }
+        return fraction == 0.0 ? self : value
     }
 }

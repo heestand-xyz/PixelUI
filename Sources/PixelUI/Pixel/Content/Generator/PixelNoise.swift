@@ -57,7 +57,7 @@ public struct PixelNoise: Pixel {
         case .octaves:
             return pix.octaves
         case .position:
-            return Pixels.inViewSpace(pix.position, size: size)
+            return Pixels.inViewZeroSpace(pix.position, size: size)
         case .motion:
             return Pixels.inViewSpace(pix.motion, size: size)
         case .zoom:
@@ -85,7 +85,7 @@ public struct PixelNoise: Pixel {
             case .octaves:
                 Pixels.updateValue(pix: &pix, value: value, at: \.octaves)
             case .position:
-                Pixels.updateValueInPixelSpace(pix: &pix, value: value, size: size, at: \.position)
+                Pixels.updateValueInPixelZeroSpace(pix: &pix, value: value, size: size, at: \.position)
             case .motion:
                 Pixels.updateValueInPixelSpace(pix: &pix, value: value, size: size, at: \.motion)
             case .zoom:

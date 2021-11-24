@@ -61,7 +61,7 @@ public struct PixelStar: Pixel {
         case .trailingRadius:
             return Pixels.inViewSpace(pix.trailingRadius, size: size)
         case .position:
-            return Pixels.inViewSpace(pix.position, size: size)
+            return Pixels.inViewZeroSpace(pix.position, size: size)
         case .rotation:
             return Pixels.asAngle(pix.rotation)
         case .cornerRadius:
@@ -89,7 +89,7 @@ public struct PixelStar: Pixel {
             case .trailingRadius:
                 Pixels.updateValueInPixelSpace(pix: &pix, value: value, size: size, at: \.trailingRadius)
             case .position:
-                Pixels.updateValueInPixelSpace(pix: &pix, value: value, size: size, at: \.position)
+                Pixels.updateValueInPixelZeroSpace(pix: &pix, value: value, size: size, at: \.position)
             case .rotation:
                 Pixels.updateValueAngle(pix: &pix, value: value, at: \.rotation)
             case .cornerRadius:

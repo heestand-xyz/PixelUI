@@ -9,28 +9,25 @@ import Resolution
 
 extension Pixels {
     
-    static func update(metadata: [PixelsMetadata.Key: PixelMetadata],
-                       pixel: Pixel,
-                       pix: PIX,
-                       size: CGSize) {
+    static func update(resolution: Resolution, pixel: Pixel, pix: PIX) {
         
-        var localMetadata: [String: PixelMetadata] = [:]
-        for (key, value) in metadata {
-            guard key.pixId == pix.id else { continue }
-            localMetadata[key.variable] = value
-        }
-        pixel.update(metadata: localMetadata, pix: pix, size: size)
-     
+        pixel.pixType.set(resolution: resolution, pix: pix)
+        
         switch pixel.pixelTree {
         case .content:
-            break
+            
+            if let imagePix = pix as? ImagePIX {
+                imagePix.resizePlacement = .crop
+                imagePix.resizeResolution = resolution
+            }
+            
         case .singleEffect(let pixel):
             
             guard let singleEffectPix = pix as? PIXSingleEffect else { return }
             
             guard let inputPix: PIX = singleEffectPix.input as? PIX else { return }
             
-            Self.update(metadata: metadata, pixel: pixel, pix: inputPix, size: size)
+            Self.update(resolution: resolution, pixel: pixel, pix: inputPix)
             
         case .mergerEffect(let pixelA, let pixelB):
             
@@ -39,8 +36,8 @@ extension Pixels {
             guard let inputPixA: PIX = mergerEffectPix.inputA as? PIX else { return }
             guard let inputPixB: PIX = mergerEffectPix.inputB as? PIX else { return }
             
-            Self.update(metadata: metadata, pixel: pixelA, pix: inputPixA, size: size)
-            Self.update(metadata: metadata, pixel: pixelB, pix: inputPixB, size: size)
+            Self.update(resolution: resolution, pixel: pixelA, pix: inputPixA)
+            Self.update(resolution: resolution, pixel: pixelB, pix: inputPixB)
 
         case .multiEffect(let pixels):
             
@@ -48,19 +45,19 @@ extension Pixels {
             
             for (pixel, inputNode) in zip(pixels, multiEffectPix.inputs) {
                 guard let inputPix: PIX = inputNode as? PIX else { continue }
-                Self.update(metadata: metadata, pixel: pixel, pix: inputPix, size: size)
+                Self.update(resolution: resolution, pixel: pixel, pix: inputPix)
             }
             
         case .feedback(let pixel, let feedbackPixel):
-            
+                
             guard let feedbackPix = pix as? FeedbackPIX else { return }
             
             guard let inputPix: PIX = feedbackPix.input as? PIX else { return }
             guard let feedbackInputPix: PIX = feedbackPix.feedbackInput else { return }
             #warning("Loop")
             
-            Self.update(metadata: metadata, pixel: pixel, pix: inputPix, size: size)
-            Self.update(metadata: metadata, pixel: feedbackPixel, pix: feedbackInputPix, size: size)
+            Self.update(resolution: resolution, pixel: pixel, pix: inputPix)
+            Self.update(resolution: resolution, pixel: feedbackPixel, pix: feedbackInputPix)
         }
     }
 }

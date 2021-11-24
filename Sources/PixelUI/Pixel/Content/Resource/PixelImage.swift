@@ -21,7 +21,11 @@ public struct PixelImage: Pixel {
     
     enum Key: String, CaseIterable {
         case name
+        case image
     }
+    
+    var name: String?
+    var imageId: UUID?
     
     public init(_ name: String) {
         
@@ -29,17 +33,35 @@ public struct PixelImage: Pixel {
             switch key {
             case .name:
                 metadata[key.rawValue] = name
+            case .image:
+                continue
+            }
+        }
+    }
+    
+    public init(_ image: @autoclosure @escaping () -> MPImage) {
+        
+        for key in Key.allCases {
+            switch key {
+            case .image:
+                metadata[key.rawValue] = FutureImage(call: image)
+            case .name:
+                continue
             }
         }
     }
     
     public func value(at key: String, pix: PIX, size: CGSize) -> PixelMetadata? {
-                
+        
+        guard let pix = pix as? Pix else { return nil }
+        
         guard let key = Key(rawValue: key) else { return nil }
         
         switch key {
         case .name:
-            return ""
+            return name
+        case .image:
+            return FutureImage(call: { pix.image })
         }
     }
     
@@ -56,6 +78,10 @@ public struct PixelImage: Pixel {
                 guard let name: String = value as? String else { continue }
                 guard let image = MPImage(named: name) else { continue }
                 pix.image = image
+            case .image:
+                guard pix.image == nil else { return }
+                guard let futureImage = value as? FutureImage else { continue }
+                pix.image = futureImage.call()
             }
         }
     }

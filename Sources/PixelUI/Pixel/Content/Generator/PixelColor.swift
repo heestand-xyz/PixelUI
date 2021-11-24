@@ -17,6 +17,11 @@ extension PixelColor: Pixel {
     
     public var pixelTree: PixelTree { .content }
     
+    public var size: CGSize? {
+        get { nil }
+        set {}
+    }
+    
     public var metadata: [String : PixelMetadata] {
         get { [Key.color.rawValue: self] }
         set {}
@@ -62,6 +67,11 @@ extension Color: Pixel {
     public var pixType: PIXType { .content(.generator(.color)) }
     
     public var pixelTree: PixelTree { .content }
+    
+    public var size: CGSize? {
+        get { nil }
+        set {}
+    }
     
     public var metadata: [String : PixelMetadata] {
         get { [Key.color.rawValue: PixelColor(self)] }

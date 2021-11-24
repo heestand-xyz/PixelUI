@@ -18,7 +18,9 @@ public struct Pixels: View {
     
     public var body: some View {
         GeometryReader { geometryProxy in
-            PixelsView(resolution: resolution ?? (.size(geometryProxy.size) * 2), size: geometryProxy.size, pixel: pixel)
+            PixelsView(resolution: resolution ?? (.size(geometryProxy.size) * 2),
+                       size: geometryProxy.size,
+                       pixel: pixel)
         }
     }
 }

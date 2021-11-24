@@ -67,7 +67,7 @@ public struct PixelBlur: Pixel {
         case .angle:
             return Pixels.asAngle(pix.angle)
         case .position:
-            return Pixels.inViewSpace(pix.position, size: size)
+            return Pixels.inViewZeroSpace(pix.position, size: size)
         case .quality:
             return pix.quality.rawValue
         }
@@ -89,7 +89,7 @@ public struct PixelBlur: Pixel {
             case .angle:
                 Pixels.updateValueAngle(pix: &pix, value: value, at: \.angle)
             case .position:
-                Pixels.updateValueInPixelSpace(pix: &pix, value: value, size: size, at: \.position)
+                Pixels.updateValueInPixelZeroSpace(pix: &pix, value: value, size: size, at: \.position)
             case .quality:
                 Pixels.updateRawValue(pix: &pix, value: value, at: \.quality)
             }

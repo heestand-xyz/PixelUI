@@ -18,6 +18,11 @@ extension Pixels {
         value * size.height
     }
     
+    static func inViewZeroSpace(_ value: CGPoint, size: CGSize) -> CGPoint {
+        CGPoint(x: value.x * size.height,
+                y: -value.y * size.height)
+    }
+    
     static func inViewSpace(_ value: CGPoint, size: CGSize) -> CGPoint {
         CGPoint(x: value.x * size.height + size.width / 2,
                 y: -value.y * size.height + size.height / 2)
@@ -33,6 +38,11 @@ extension Pixels {
     
     static func inPixelSpace(_ value: CGFloat, size: CGSize) -> CGFloat {
         value / size.height
+    }
+    
+    static func inPixelZeroSpace(_ value: CGPoint, size: CGSize) -> CGPoint {
+        CGPoint(x: value.x / size.height,
+                y: -value.y / size.height)
     }
     
     static func inPixelSpace(_ value: CGPoint, size: CGSize) -> CGPoint {

@@ -9,6 +9,7 @@ public protocol Pixel {
     
     var pixType: PIXType { get }
     var pixelTree: PixelTree { get }
+    
     var metadata: [String: PixelMetadata] { get set }
     
     func value(at key: String, pix: PIX, size: CGSize) -> PixelMetadata?
