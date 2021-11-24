@@ -12,3 +12,7 @@ protocol Future {
 struct FutureImage: Future {
     var call: () -> MPImage?
 }
+
+struct FutureView: Future {
+    var call: () -> MPView?
+}

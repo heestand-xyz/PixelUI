@@ -174,3 +174,20 @@ extension FutureImage: PixelMetadata {
         return fraction == 0.0 ? self : value
     }
 }
+
+extension FutureView: PixelMetadata {
+    
+    public var resolutionUpdate: Bool { false }
+    
+    public func isEqual(to value: PixelMetadata) -> Bool {
+        guard value is Self else { return false }
+        #warning("New view will not update")
+        return true
+    }
+    
+    public func interpolate(at fraction: CGFloat, to value: PixelMetadata) -> PixelMetadata {
+        guard let value = value as? Self else { return self }
+        return fraction == 0.0 ? self : value
+    }
+}
+
