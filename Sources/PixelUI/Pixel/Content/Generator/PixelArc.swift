@@ -43,7 +43,7 @@ public struct PixelArc: Pixel {
                 metadata[key.rawValue] = angleFrom
             case .angleTo:
                 metadata[key.rawValue] = angleTo
-            case .position, .angleOffset, .color, .backgroundColor, .edgeRadius, .edgeColor:
+            default:
                 continue
             }
         }

@@ -33,7 +33,7 @@ public struct PixelImage: Pixel {
             switch key {
             case .name:
                 metadata[key.rawValue] = name
-            case .image:
+            default:
                 continue
             }
         }
@@ -45,7 +45,7 @@ public struct PixelImage: Pixel {
             switch key {
             case .image:
                 metadata[key.rawValue] = FutureImage(call: image)
-            case .name:
+            default:
                 continue
             }
         }

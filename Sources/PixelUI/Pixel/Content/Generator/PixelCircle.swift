@@ -33,7 +33,7 @@ public struct PixelCircle: Pixel {
             switch key {
             case .radius:
                 metadata[key.rawValue] = radius
-            case .position, .color, .backgroundColor, .edgeRadius, .edgeColor:
+            default:
                 continue
             }
         }

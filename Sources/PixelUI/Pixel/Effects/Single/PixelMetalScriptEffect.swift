@@ -56,7 +56,7 @@ public struct PixelMetalScriptEffect: Pixel {
                 metadata[key.rawValue] = blueScript
             case .alphaScript:
                 metadata[key.rawValue] = alphaScript
-            case .whiteScript:
+            default:
                 continue
             }
         }
@@ -81,7 +81,7 @@ public struct PixelMetalScriptEffect: Pixel {
                 metadata[key.rawValue] = whiteScript
             case .alphaScript:
                 metadata[key.rawValue] = alphaScript
-            case .redScript, .greenScript, .blueScript:
+            default:
                 continue
             }
         }

@@ -38,7 +38,7 @@ public struct PixelLine: Pixel {
                 metadata[key.rawValue] = positionTo
             case .lineWidth:
                 metadata[key.rawValue] = lineWidth
-            case .color, .backgroundColor:
+            default:
                 continue
             }
         }

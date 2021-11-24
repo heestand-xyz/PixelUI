@@ -51,7 +51,7 @@ public struct PixelGradient: Pixel {
             switch key {
             case .direction:
                 metadata[key.rawValue] = direction.rawValue
-            case .scale, .offset, .gamma, .extendMode, .position:
+            default:
                 continue
             }
         }

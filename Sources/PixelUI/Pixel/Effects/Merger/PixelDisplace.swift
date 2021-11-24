@@ -34,7 +34,7 @@ public struct PixelDisplace: Pixel {
             switch key {
             case .distance:
                 metadata[key.rawValue] = distance
-            case .origin, .extend:
+            default:
                 continue
             }
         }

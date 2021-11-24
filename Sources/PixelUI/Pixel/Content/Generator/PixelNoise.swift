@@ -39,7 +39,7 @@ public struct PixelNoise: Pixel {
                 metadata[key.rawValue] = ocataves
             case .colored:
                 metadata[key.rawValue] = true
-            case .seed, .position, .motion, .zoom, .random, .includeAlpha:
+            default:
                 continue
             }
         }

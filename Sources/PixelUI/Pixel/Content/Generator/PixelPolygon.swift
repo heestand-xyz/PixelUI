@@ -37,7 +37,7 @@ public struct PixelPolygon: Pixel {
                 metadata[key.rawValue] = count
             case .radius:
                 metadata[key.rawValue] = radius
-            case .position, .rotation, .cornerRadius, .color, .backgroundColor:
+            default:
                 continue
             }
         }

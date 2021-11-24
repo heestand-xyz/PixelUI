@@ -41,7 +41,7 @@ public struct PixelStar: Pixel {
                 metadata[key.rawValue] = leadingRadius
             case .trailingRadius:
                 metadata[key.rawValue] = trailingRadius ?? leadingRadius / 2
-            case .position, .rotation, .cornerRadius, .color, .backgroundColor:
+            default:
                 continue
             }
         }

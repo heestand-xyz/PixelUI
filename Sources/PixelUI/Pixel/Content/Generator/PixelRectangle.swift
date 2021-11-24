@@ -32,7 +32,7 @@ public struct PixelRectangle: Pixel {
             switch key {
             case .size:
                 metadata[key.rawValue] = size
-            case .position, .cornerRadius, .color, .backgroundColor:
+            default:
                 continue
             }
         }
