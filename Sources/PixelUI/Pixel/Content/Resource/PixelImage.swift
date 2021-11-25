@@ -78,6 +78,9 @@ public struct PixelImage: Pixel {
                 guard let name: String = value as? String else { continue }
                 guard let image = MPImage(named: name) else { continue }
                 pix.image = image
+                DispatchQueue.main.async {
+                    pix.render()
+                }
             case .image:
                 guard pix.image == nil else { return }
                 guard let futureImage = value as? FutureImage else { continue }
