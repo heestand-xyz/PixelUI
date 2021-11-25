@@ -43,9 +43,11 @@ struct PixelsView: ViewRepresentable {
         
         Self.lastMetadata[pix.id] = [:]
         Self.lastSize[pix.id] = size
-        Self.lastResolution[pix.id] = nil
         
+        print("Pixel Tree:")
         printTree(pixel: rootPixel)
+        
+        print("PIX Tree:")
         printTree(pix: pix)
         
         return pix.pixView

@@ -12,8 +12,6 @@ public struct PixelBlur: Pixel {
     
     typealias Pix = BlurPIX
     
-    static let maxSize: CGSize = Resolution._4K.size
-    
     public let pixType: PIXType = .effect(.single(.blur))
     
     public var pixelTree: PixelTree
@@ -63,7 +61,7 @@ public struct PixelBlur: Pixel {
         case .style:
             return pix.style.rawValue
         case .radius:
-            return Pixels.inViewSpace(pix.radius, size: Self.maxSize)
+            return Pixels.inViewSpace(pix.radius, size: size)
         case .angle:
             return Pixels.asAngle(pix.angle)
         case .position:
@@ -85,7 +83,7 @@ public struct PixelBlur: Pixel {
             case .style:
                 Pixels.updateRawValue(pix: &pix, value: value, at: \.style)
             case .radius:
-                Pixels.updateValueInPixelSpace(pix: &pix, value: value, size: Self.maxSize, at: \.radius)
+                Pixels.updateValueInPixelSpace(pix: &pix, value: value, size: size, at: \.radius)
             case .angle:
                 Pixels.updateValueAngle(pix: &pix, value: value, at: \.angle)
             case .position:
