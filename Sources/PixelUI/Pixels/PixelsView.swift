@@ -4,6 +4,7 @@
 
 import SwiftUI
 import Resolution
+import RenderKit
 import PixelKit
 
 struct PixelsView: ViewRepresentable {
@@ -27,10 +28,14 @@ struct PixelsView: ViewRepresentable {
     
     init(resolution: Resolution, size: CGSize, pixel: @escaping () -> (Pixel)) {
         print("Pixels Init")
+        
         let pixel = pixel()
+        
         rootPixel = pixel
+        
         self.size = size
         self.resolution = resolution
+        
         _pix = StateObject(wrappedValue: Pixels.createPix(for: pixel, at: resolution))
     }
     
@@ -39,6 +44,9 @@ struct PixelsView: ViewRepresentable {
         Self.lastMetadata[pix.id] = [:]
         Self.lastSize[pix.id] = size
         Self.lastResolution[pix.id] = nil
+        
+        printTree(pixel: rootPixel)
+        printTree(pix: pix)
         
         return pix.pixView
     }
@@ -113,5 +121,34 @@ struct PixelsView: ViewRepresentable {
             }
         }
         return metadata
+    }
+}
+
+extension PixelsView {
+    
+    func printTree(pixel: Pixel, depth: Int = 0) {
+        var log = ""
+        for _ in 0..<depth {
+            log += "    "
+        }
+        log += "- \(pixel.pixType.name)"
+        print(log)
+        for pixel in pixel.pixelTree.pixels {
+            printTree(pixel: pixel, depth: depth + 1)
+        }
+    }
+    
+    func printTree(pix: PIX, depth: Int = 0) {
+        var log = ""
+        for _ in 0..<depth {
+            log += "    "
+        }
+        log += "- \(pix.name)"
+        print(log)
+        if let inputPix = pix as? NODEInIO {
+            for pix in inputPix.inputList {
+                printTree(pix: pix as! PIX, depth: depth + 1)
+            }
+        }
     }
 }
