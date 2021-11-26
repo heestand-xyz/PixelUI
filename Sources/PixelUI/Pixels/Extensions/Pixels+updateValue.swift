@@ -32,11 +32,20 @@ extension Pixels {
     }
     
     static func updateValueInPixelZeroSpace<P>(pix: inout P,
-                                           value: PixelMetadata,
-                                           size: CGSize,
-                                           at keyPath: WritableKeyPath<P, CGPoint>) where P: PIX {
+                                               value: PixelMetadata,
+                                               size: CGSize,
+                                               at keyPath: WritableKeyPath<P, CGPoint>) where P: PIX {
         if let value = value as? CGPoint {
             pix[keyPath: keyPath] = inPixelZeroSpace(value, size: size)
+        }
+    }
+    
+    static func updateValueInPixelNormalizedSpace<P>(pix: inout P,
+                                                     value: PixelMetadata,
+                                                     size: CGSize,
+                                                     at keyPath: WritableKeyPath<P, CGPoint>) where P: PIX {
+        if let value = value as? CGPoint {
+            pix[keyPath: keyPath] = inPixelNormalizedSpace(value, size: size)
         }
     }
     
