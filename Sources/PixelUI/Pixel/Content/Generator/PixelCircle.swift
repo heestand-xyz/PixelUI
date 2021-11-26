@@ -49,7 +49,7 @@ public struct PixelCircle: Pixel {
         case .radius:
             return Pixels.inViewSpace(pix.radius, size: size)
         case .position:
-            return Pixels.inViewZeroSpace(pix.position, size: size)
+            return Pixels.inZeroViewSpace(pix.position, size: size)
         case .color:
             return pix.color
         case .backgroundColor:
@@ -73,7 +73,7 @@ public struct PixelCircle: Pixel {
             case .radius:
                 Pixels.updateValueInPixelSpace(pix: &pix, value: value, size: size, at: \.radius)
             case .position:
-                Pixels.updateValueInPixelZeroSpace(pix: &pix, value: value, size: size, at: \.position)
+                Pixels.updateValueInZeroPixelSpace(pix: &pix, value: value, size: size, at: \.position)
             case .color:
                 Pixels.updateValue(pix: &pix, value: value, at: \.color)
             case .backgroundColor:

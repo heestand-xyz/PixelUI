@@ -18,14 +18,30 @@ extension Pixels {
         value * size.height
     }
     
-    static func inViewZeroSpace(_ value: CGPoint, size: CGSize) -> CGPoint {
+    static func inZeroViewSpace(_ value: CGPoint, size: CGSize) -> CGPoint {
         CGPoint(x: value.x * size.height,
                 y: -value.y * size.height)
     }
     
-    static func inViewNormalizedSpace(_ value: CGPoint, size: CGSize) -> CGPoint {
+    static func inNormalizedViewSpace(_ value: CGPoint, size: CGSize) -> CGPoint {
         CGPoint(x: value.x * size.width,
                 y: (1.0 - value.y) * size.height)
+    }
+    
+    static func inViewNormalizedLeftSpace(_ value: CGFloat, size: CGSize) -> CGFloat {
+        value * size.width
+    }
+    
+    static func inViewNormalizedRightSpace(_ value: CGFloat, size: CGSize) -> CGFloat {
+        (1.0 - value) * size.width
+    }
+    
+    static func inViewNormalizedBottomSpace(_ value: CGFloat, size: CGSize) -> CGFloat {
+        value * size.height
+    }
+    
+    static func inViewNormalizedTopSpace(_ value: CGFloat, size: CGSize) -> CGFloat {
+        (1.0 - value) * size.height
     }
     
     static func inViewSpace(_ value: CGPoint, size: CGSize) -> CGPoint {
@@ -45,14 +61,30 @@ extension Pixels {
         value / size.height
     }
     
-    static func inPixelZeroSpace(_ value: CGPoint, size: CGSize) -> CGPoint {
+    static func inZeroPixelSpace(_ value: CGPoint, size: CGSize) -> CGPoint {
         CGPoint(x: value.x / size.height,
                 y: -value.y / size.height)
     }
     
-    static func inPixelNormalizedSpace(_ value: CGPoint, size: CGSize) -> CGPoint {
+    static func inNormalizedPixelSpace(_ value: CGPoint, size: CGSize) -> CGPoint {
         CGPoint(x: value.x / size.width,
                 y: 1.0 - (value.y / size.height))
+    }
+    
+    static func inNormalizedLeftPixelSpace(_ value: CGFloat, size: CGSize) -> CGFloat {
+        value / size.width
+    }
+    
+    static func inNormalizedRightPixelSpace(_ value: CGFloat, size: CGSize) -> CGFloat {
+        1.0 - (value / size.width)
+    }
+    
+    static func inNormalizedBottomPixelSpace(_ value: CGFloat, size: CGSize) -> CGFloat {
+        value / size.height
+    }
+    
+    static func inNormalizedTopPixelSpace(_ value: CGFloat, size: CGSize) -> CGFloat {
+        1.0 - (value / size.height)
     }
     
     static func inPixelSpace(_ value: CGPoint, size: CGSize) -> CGPoint {

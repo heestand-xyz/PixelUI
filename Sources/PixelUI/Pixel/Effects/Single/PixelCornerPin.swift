@@ -64,13 +64,13 @@ public struct PixelCornerPin: Pixel {
         
         switch key {
         case .topLeft:
-            return Pixels.inViewNormalizedSpace(pix.topLeft, size: size)
+            return Pixels.inNormalizedViewSpace(pix.topLeft, size: size)
         case .topRight:
-            return Pixels.inViewNormalizedSpace(pix.topRight, size: size)
+            return Pixels.inNormalizedViewSpace(pix.topRight, size: size)
         case .bottomLeft:
-            return Pixels.inViewNormalizedSpace(pix.bottomLeft, size: size)
+            return Pixels.inNormalizedViewSpace(pix.bottomLeft, size: size)
         case .bottomRight:
-            return Pixels.inViewNormalizedSpace(pix.bottomRight, size: size)
+            return Pixels.inNormalizedViewSpace(pix.bottomRight, size: size)
         case .perspective:
             return pix.perspective
         case .subdivisions:
@@ -88,13 +88,13 @@ public struct PixelCornerPin: Pixel {
             
             switch key {
             case .topLeft:
-                Pixels.updateValueInPixelNormalizedSpace(pix: &pix, value: value, size: size, at: \.topLeft)
+                Pixels.updateValueInNormalizedPixelSpace(pix: &pix, value: value, size: size, at: \.topLeft)
             case .topRight:
-                Pixels.updateValueInPixelNormalizedSpace(pix: &pix, value: value, size: size, at: \.topRight)
+                Pixels.updateValueInNormalizedPixelSpace(pix: &pix, value: value, size: size, at: \.topRight)
             case .bottomLeft:
-                Pixels.updateValueInPixelNormalizedSpace(pix: &pix, value: value, size: size, at: \.bottomLeft)
+                Pixels.updateValueInNormalizedPixelSpace(pix: &pix, value: value, size: size, at: \.bottomLeft)
             case .bottomRight:
-                Pixels.updateValueInPixelNormalizedSpace(pix: &pix, value: value, size: size, at: \.bottomRight)
+                Pixels.updateValueInNormalizedPixelSpace(pix: &pix, value: value, size: size, at: \.bottomRight)
             case .perspective:
                 Pixels.updateValue(pix: &pix, value: value, at: \.perspective)
             case .subdivisions:

@@ -31,21 +31,57 @@ extension Pixels {
         }
     }
     
-    static func updateValueInPixelZeroSpace<P>(pix: inout P,
+    static func updateValueInZeroPixelSpace<P>(pix: inout P,
                                                value: PixelMetadata,
                                                size: CGSize,
                                                at keyPath: WritableKeyPath<P, CGPoint>) where P: PIX {
         if let value = value as? CGPoint {
-            pix[keyPath: keyPath] = inPixelZeroSpace(value, size: size)
+            pix[keyPath: keyPath] = inZeroPixelSpace(value, size: size)
         }
     }
     
-    static func updateValueInPixelNormalizedSpace<P>(pix: inout P,
+    static func updateValueInNormalizedPixelSpace<P>(pix: inout P,
                                                      value: PixelMetadata,
                                                      size: CGSize,
                                                      at keyPath: WritableKeyPath<P, CGPoint>) where P: PIX {
         if let value = value as? CGPoint {
-            pix[keyPath: keyPath] = inPixelNormalizedSpace(value, size: size)
+            pix[keyPath: keyPath] = inNormalizedPixelSpace(value, size: size)
+        }
+    }
+    
+    static func updateValueInNormalizedLeftPixelSpace<P>(pix: inout P,
+                                                         value: PixelMetadata,
+                                                         size: CGSize,
+                                                         at keyPath: WritableKeyPath<P, CGFloat>) where P: PIX {
+        if let value = value as? CGFloat {
+            pix[keyPath: keyPath] = inNormalizedLeftPixelSpace(value, size: size)
+        }
+    }
+    
+    static func updateValueInNormalizedRightPixelSpace<P>(pix: inout P,
+                                                         value: PixelMetadata,
+                                                         size: CGSize,
+                                                         at keyPath: WritableKeyPath<P, CGFloat>) where P: PIX {
+        if let value = value as? CGFloat {
+            pix[keyPath: keyPath] = inNormalizedRightPixelSpace(value, size: size)
+        }
+    }
+    
+    static func updateValueInNormalizedBottomPixelSpace<P>(pix: inout P,
+                                                         value: PixelMetadata,
+                                                         size: CGSize,
+                                                         at keyPath: WritableKeyPath<P, CGFloat>) where P: PIX {
+        if let value = value as? CGFloat {
+            pix[keyPath: keyPath] = inNormalizedBottomPixelSpace(value, size: size)
+        }
+    }
+    
+    static func updateValueInNormalizedTopPixelSpace<P>(pix: inout P,
+                                                         value: PixelMetadata,
+                                                         size: CGSize,
+                                                         at keyPath: WritableKeyPath<P, CGFloat>) where P: PIX {
+        if let value = value as? CGFloat {
+            pix[keyPath: keyPath] = inNormalizedTopPixelSpace(value, size: size)
         }
     }
     

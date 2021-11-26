@@ -48,7 +48,7 @@ public struct PixelRectangle: Pixel {
         case .size:
             return Pixels.inViewSpace(pix.size, size: size)
         case .position:
-            return Pixels.inViewZeroSpace(pix.position, size: size)
+            return Pixels.inZeroViewSpace(pix.position, size: size)
         case .cornerRadius:
             return Pixels.inViewSpace(pix.cornerRadius, size: size)
         case .color:
@@ -70,7 +70,7 @@ public struct PixelRectangle: Pixel {
             case .size:
                 Pixels.updateValueInPixelSpace(pix: &pix, value: value, size: size, at: \.size)
             case .position:
-                Pixels.updateValueInPixelZeroSpace(pix: &pix, value: value, size: size, at: \.position)
+                Pixels.updateValueInZeroPixelSpace(pix: &pix, value: value, size: size, at: \.position)
             case .cornerRadius:
                 Pixels.updateValueInPixelSpace(pix: &pix, value: value, size: size, at: \.cornerRadius)
             case .color:

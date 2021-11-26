@@ -86,7 +86,7 @@ public struct PixelGradient: Pixel {
         case .extendMode:
             return pix.extendMode.rawValue
         case .position:
-            return Pixels.inViewZeroSpace(pix.position, size: size)
+            return Pixels.inZeroViewSpace(pix.position, size: size)
         }
     }
     
@@ -130,7 +130,7 @@ public struct PixelGradient: Pixel {
             case .extendMode:
                 Pixels.updateRawValue(pix: &pix, value: value, at: \.extendMode)
             case .position:
-                Pixels.updateValueInPixelZeroSpace(pix: &pix, value: value, size: size, at: \.position)
+                Pixels.updateValueInZeroPixelSpace(pix: &pix, value: value, size: size, at: \.position)
             }
         }
     }

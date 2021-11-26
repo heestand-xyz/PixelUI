@@ -55,7 +55,7 @@ public struct PixelPolygon: Pixel {
         case .radius:
             return Pixels.inViewSpace(pix.radius, size: size)
         case .position:
-            return Pixels.inViewZeroSpace(pix.position, size: size)
+            return Pixels.inZeroViewSpace(pix.position, size: size)
         case .rotation:
             return Pixels.asAngle(pix.rotation)
         case .cornerRadius:
@@ -81,7 +81,7 @@ public struct PixelPolygon: Pixel {
             case .radius:
                 Pixels.updateValueInPixelSpace(pix: &pix, value: value, size: size, at: \.radius)
             case .position:
-                Pixels.updateValueInPixelZeroSpace(pix: &pix, value: value, size: size, at: \.position)
+                Pixels.updateValueInZeroPixelSpace(pix: &pix, value: value, size: size, at: \.position)
             case .rotation:
                 Pixels.updateValueAngle(pix: &pix, value: value, at: \.rotation)
             case .cornerRadius:
