@@ -25,10 +25,6 @@ public struct PixelColorCorrect: Pixel {
         case temperature
     }
     
-    /// - Parameters:
-    ///   - whitePoint: The color white should be.
-    ///   - vibrance: Saturation between `0.0` and `1.0`.
-    ///   - temperature: Cold is `-1.0`, neutral is `0.0` and warm is `1.0`,
     internal init(whitePoint: Color = .white,
                   vibrance: CGFloat = 0.0,
                   temperature: CGFloat = 0.0,
