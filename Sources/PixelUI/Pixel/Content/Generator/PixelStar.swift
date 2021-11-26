@@ -139,7 +139,7 @@ public extension PixelStar {
 struct PixelStar_Previews: PreviewProvider {
     static var previews: some View {
         Pixels {
-            PixelStar(count: 5, radius: 50)
+            PixelStar(count: 5, radius: 100)
         }
     }
 }

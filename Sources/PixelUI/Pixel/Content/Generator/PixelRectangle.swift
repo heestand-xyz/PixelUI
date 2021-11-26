@@ -112,7 +112,7 @@ public extension PixelRectangle {
 struct PixelRectangle_Previews: PreviewProvider {
     static var previews: some View {
         Pixels {
-            PixelRectangle(size: CGSize(width: 100, height: 100))
+            PixelRectangle(size: CGSize(width: 200, height: 200))
         }
     }
 }

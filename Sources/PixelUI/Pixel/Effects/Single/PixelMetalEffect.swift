@@ -110,7 +110,7 @@ struct PixelMetalEffect_Previews: PreviewProvider {
     static var previews: some View {
         Pixels {
             PixelMetalEffect(code: "return pix;") {
-                PixelCircle(radius: 50)
+                PixelCircle(radius: 100)
             }
         }
     }

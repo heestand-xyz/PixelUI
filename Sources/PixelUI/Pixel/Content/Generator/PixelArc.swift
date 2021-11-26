@@ -135,7 +135,7 @@ public extension PixelArc {
         return pixel
     }
     
-    func pixelEdge(radius: CGFloat, color: Color) -> Self {
+    func pixelArcEdge(radius: CGFloat, color: Color) -> Self {
         var pixel = self
         pixel.metadata[Key.edgeRadius.rawValue] = radius
         pixel.metadata[Key.edgeColor.rawValue] = PixelColor(color)
@@ -146,7 +146,7 @@ public extension PixelArc {
 struct PixelArc_Previews: PreviewProvider {
     static var previews: some View {
         Pixels {
-            PixelArc(radius: 50, leadingAngle: .zero, tralingAngle: Angle(degrees: 90))
+            PixelArc(radius: 100, leadingAngle: .zero, tralingAngle: Angle(degrees: 90))
         }
     }
 }

@@ -159,7 +159,7 @@ struct PixelMetalScriptEffect_Previews: PreviewProvider {
     static var previews: some View {
         Pixels {
             PixelMetalScriptEffect(red: "pix.r", green: "0.5", blue: "0.0", alpha: "1.0") {
-                PixelCircle(radius: 50)
+                PixelCircle(radius: 100)
             }
         }
     }

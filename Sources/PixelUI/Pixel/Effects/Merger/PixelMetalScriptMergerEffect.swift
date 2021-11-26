@@ -161,9 +161,9 @@ struct PixelMetalScriptMergerEffect_Previews: PreviewProvider {
     static var previews: some View {
         Pixels {
             PixelMetalScriptMergerEffect(red: "pixA.r", green: "pixB.g", blue: "0.0", alpha: "1.0") {
-                PixelCircle(radius: 50)
+                PixelCircle(radius: 100)
             } withPixel: {
-                PixelStar(count: 5, radius: 50)
+                PixelStar(count: 5, radius: 100)
             }
         }
     }

@@ -116,9 +116,9 @@ struct PixelMetalMergerEffect_Previews: PreviewProvider {
     static var previews: some View {
         Pixels {
             PixelMetalMergerEffect(code: "return pixA + pixB;") {
-                PixelPolygon(count: 3, radius: 50)
+                PixelPolygon(count: 3, radius: 100)
             } withPixel: {
-                PixelStar(count: 5, radius: 50)
+                PixelStar(count: 5, radius: 100)
             }
         }
     }

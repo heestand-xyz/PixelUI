@@ -24,9 +24,9 @@ import PixelColor
 ///         return pixA + pixB + pixC;
 ///         """
 ///     ) {
-///         PixelCircle(radius: 50)
-///         PixelStar(count: 5, radius: 50)
-///         PixelPolygon(count: 3, radius: 50)
+///         PixelCircle(radius: 100)
+///         PixelStar(count: 5, radius: 100)
+///         PixelPolygon(count: 3, radius: 100)
 ///     }
 /// }
 /// ```
@@ -121,9 +121,9 @@ struct PixelMetalMultiEffect_Previews: PreviewProvider {
                 return pixA + pixB + pixC;
                 """
             ) {
-                PixelCircle(radius: 50)
-                PixelStar(count: 5, radius: 50)
-                PixelPolygon(count: 3, radius: 50)
+                PixelCircle(radius: 100)
+                PixelStar(count: 5, radius: 100)
+                PixelPolygon(count: 3, radius: 100)
             }
         }
     }

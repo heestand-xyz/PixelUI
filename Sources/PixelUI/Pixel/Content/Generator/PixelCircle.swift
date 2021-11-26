@@ -107,7 +107,7 @@ public extension PixelCircle {
         return pixel
     }
     
-    func pixelEdge(radius: CGFloat, color: Color) -> Self {
+    func pixelCircleEdge(radius: CGFloat, color: Color) -> Self {
         var pixel = self
         pixel.metadata[Key.edgeRadius.rawValue] = radius
         pixel.metadata[Key.edgeColor.rawValue] = PixelColor(color)
@@ -118,7 +118,7 @@ public extension PixelCircle {
 struct PixelCircle_Previews: PreviewProvider {
     static var previews: some View {
         Pixels {
-            PixelCircle(radius: 50)
+            PixelCircle(radius: 100)
         }
     }
 }

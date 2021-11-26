@@ -165,9 +165,9 @@ struct PixelMetalScriptMultiEffect_Previews: PreviewProvider {
                                         green: "texs.sample(s, uv, 1).g",
                                         blue: "texs.sample(s, uv, 2).b",
                                         alpha: "1.0") {
-                PixelCircle(radius: 50)
-                PixelStar(count: 5, radius: 50)
-                PixelPolygon(count: 3, radius: 50)
+                PixelCircle(radius: 100)
+                PixelStar(count: 5, radius: 100)
+                PixelPolygon(count: 3, radius: 100)
             }
         }
     }

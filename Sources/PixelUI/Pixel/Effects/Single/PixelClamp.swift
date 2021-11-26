@@ -96,7 +96,7 @@ struct PixelClamp_Previews: PreviewProvider {
     static var previews: some View {
         Pixels {
             PixelCircle(radius: 100)
-                .pixelBlur(radius: 50)
+                .pixelBlur(radius: 100)
                 .pixelClamp(low: 0.25, high: 0.75)
         }
     }
