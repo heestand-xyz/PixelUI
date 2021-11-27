@@ -42,6 +42,26 @@ public struct PixelBlendsForEach: Pixel {
         }
     }
     
+    public init(_ range: ClosedRange<Int>,
+                mode blendMode: RenderKit.BlendMode,
+                pixel: (Int) -> Pixel) {
+
+        var pixels: [Pixel] = []
+        for index in range {
+            let pixel = pixel(index)
+            pixels.append(pixel)
+        }
+        
+        pixelTree = .multiEffect(pixels)
+        
+        for key in Key.allCases {
+            switch key {
+            case .blendMode:
+                metadata[key.rawValue] = blendMode.rawValue
+            }
+        }
+    }
+    
     public func value(at key: String, pix: PIX, size: CGSize) -> PixelMetadata? {
         
         guard let pix = pix as? Pix else { return nil }
