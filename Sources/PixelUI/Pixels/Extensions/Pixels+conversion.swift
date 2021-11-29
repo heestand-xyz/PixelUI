@@ -28,19 +28,19 @@ extension Pixels {
                 y: (1.0 - value.y) * size.height)
     }
     
-    static func inViewNormalizedLeftSpace(_ value: CGFloat, size: CGSize) -> CGFloat {
+    static func inNormalizedLeftViewSpace(_ value: CGFloat, size: CGSize) -> CGFloat {
         value * size.width
     }
     
-    static func inViewNormalizedRightSpace(_ value: CGFloat, size: CGSize) -> CGFloat {
+    static func inNormalizedRightViewSpace(_ value: CGFloat, size: CGSize) -> CGFloat {
         (1.0 - value) * size.width
     }
     
-    static func inViewNormalizedBottomSpace(_ value: CGFloat, size: CGSize) -> CGFloat {
+    static func inNormalizedBottomViewSpace(_ value: CGFloat, size: CGSize) -> CGFloat {
         value * size.height
     }
     
-    static func inViewNormalizedTopSpace(_ value: CGFloat, size: CGSize) -> CGFloat {
+    static func inNormalizedTopViewSpace(_ value: CGFloat, size: CGSize) -> CGFloat {
         (1.0 - value) * size.height
     }
     

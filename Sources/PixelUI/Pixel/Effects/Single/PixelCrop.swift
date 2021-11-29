@@ -56,13 +56,13 @@ public struct PixelCrop: Pixel {
         
         switch key {
         case .cropLeft:
-            return Pixels.inNormalizedLeftPixelSpace(pix.cropLeft, size: size)
+            return Pixels.inNormalizedLeftViewSpace(pix.cropLeft, size: size)
         case .cropRight:
-            return Pixels.inNormalizedRightPixelSpace(pix.cropRight, size: size)
+            return Pixels.inNormalizedRightViewSpace(pix.cropRight, size: size)
         case .cropBottom:
-            return Pixels.inNormalizedBottomPixelSpace(pix.cropBottom, size: size)
+            return Pixels.inNormalizedBottomViewSpace(pix.cropBottom, size: size)
         case .cropTop:
-            return Pixels.inNormalizedTopPixelSpace(pix.cropTop, size: size)
+            return Pixels.inNormalizedTopViewSpace(pix.cropTop, size: size)
         }
     }
     
