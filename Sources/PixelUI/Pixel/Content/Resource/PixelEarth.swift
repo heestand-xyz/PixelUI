@@ -15,7 +15,7 @@ public struct PixelEarth: Pixel {
     
     typealias Pix = EarthPIX
     
-    public let pixType: PIXType = .content(.resource(.earth))
+    public let pixType: PIXType = .content(.resource(.maps))
     
     public let pixelTree: PixelTree = .content
     
@@ -23,8 +23,7 @@ public struct PixelEarth: Pixel {
     
     enum Key: String, CaseIterable {
         case mapType
-        case latitude
-        case longitude
+        case coordinate
         case span
         case showsBuildings
         case showsPointsOfInterest
@@ -32,18 +31,22 @@ public struct PixelEarth: Pixel {
     }
     
     public init(mapType: EarthPIX.MapType = .standard,
-                latitude: CGFloat,
-                longitude: CGFloat,
+                            latitude: CGFloat,
+                            longitude: CGFloat,
+                            span: CGFloat) {
+        self.init(mapType: mapType, coordinate: CGPoint(x: longitude, y: latitude), span: span)
+    }
+    
+    public init(mapType: EarthPIX.MapType = .standard,
+                coordinate: CGPoint,
                 span: CGFloat) {
         
         for key in Key.allCases {
             switch key {
             case .mapType:
                 metadata[key.rawValue] = mapType.rawValue
-            case .latitude:
-                metadata[key.rawValue] = latitude
-            case .longitude:
-                metadata[key.rawValue] = longitude
+            case .coordinate:
+                metadata[key.rawValue] = coordinate
             case .span:
                 metadata[key.rawValue] = span
             default:
@@ -61,10 +64,8 @@ public struct PixelEarth: Pixel {
         switch key {
         case .mapType:
             return pix.mapType.rawValue
-        case .latitude:
-            return pix.latitude
-        case .longitude:
-            return pix.longitude
+        case .coordinate:
+            return pix.coordinate
         case .span:
             return pix.span
         case .showsBuildings:
@@ -87,10 +88,8 @@ public struct PixelEarth: Pixel {
             switch key {
             case .mapType:
                 Pixels.updateRawValue(pix: &pix, value: value, at: \.mapType)
-            case .latitude:
-                Pixels.updateValue(pix: &pix, value: value, at: \.latitude)
-            case .longitude:
-                Pixels.updateValue(pix: &pix, value: value, at: \.longitude)
+            case .coordinate:
+                Pixels.updateValue(pix: &pix, value: value, at: \.coordinate)
             case .span:
                 Pixels.updateValue(pix: &pix, value: value, at: \.span)
             case .showsBuildings:
