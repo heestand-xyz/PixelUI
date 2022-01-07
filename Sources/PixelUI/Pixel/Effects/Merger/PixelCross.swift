@@ -24,7 +24,7 @@ public struct PixelCross: Pixel {
     
     public init(at fraction: CGFloat,
                 pixel leadingPixel: () -> Pixel,
-                displacePixel trailingPixel: () -> Pixel) {
+                withPixel trailingPixel: () -> Pixel) {
         
         pixelTree = .mergerEffect(leadingPixel(), trailingPixel())
         
@@ -69,7 +69,7 @@ struct PixelCross_Previews: PreviewProvider {
         Pixels {
             PixelCross(at: 0.5) {
                 PixelCircle(radius: 100)
-            } displacePixel: {
+            } withPixel: {
                 PixelStar(count: 5, radius: 100)
             }
         }

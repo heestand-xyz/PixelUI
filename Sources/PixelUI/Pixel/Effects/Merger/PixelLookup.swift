@@ -8,32 +8,31 @@ import PixelKit
 import SwiftUI
 import Resolution
 
-public struct PixelDisplace: Pixel {
+public struct PixelLookup: Pixel {
     
-    typealias Pix = DisplacePIX
+    typealias Pix = LookupPIX
     
-    public let pixType: PIXType = .effect(.merger(.displace))
+    public let pixType: PIXType = .effect(.merger(.lookup))
     
     public var pixelTree: PixelTree
     
     public var metadata: [String : PixelMetadata] = [:]
     
     enum Key: String, CaseIterable {
-        case distance
-        case origin
-        case extend
+        case axis
+        case holdEdge
     }
     
-    public init(distance: CGFloat,
+    public init(axis: LookupPIX.Axis,
                 pixel leadingPixel: () -> Pixel,
                 withPixel trailingPixel: () -> Pixel) {
         
         pixelTree = .mergerEffect(leadingPixel(), trailingPixel())
-        
+
         for key in Key.allCases {
             switch key {
-            case .distance:
-                metadata[key.rawValue] = distance
+            case .axis:
+                metadata[key.rawValue] = axis.rawValue
             default:
                 continue
             }
@@ -47,12 +46,10 @@ public struct PixelDisplace: Pixel {
         guard let key = Key(rawValue: key) else { return nil }
         
         switch key {
-        case .distance:
-            return Pixels.inViewSpace(pix.distance, size: size)
-        case .origin:
-            return pix.origin
-        case .extend:
-            return pix.extend.rawValue
+        case .axis:
+            return pix.axis.rawValue
+        case .holdEdge:
+            return pix.holdEdge
         }
     }
     
@@ -65,33 +62,27 @@ public struct PixelDisplace: Pixel {
             guard let key = Key(rawValue: key) else { continue }
             
             switch key {
-            case .distance:
-                Pixels.updateValueInPixelSpace(pix: &pix, value: value, size: size, at: \.distance)
-            case .origin:
-                Pixels.updateValue(pix: &pix, value: value, at: \.origin)
-            case .extend:
-                Pixels.updateRawValue(pix: &pix, value: value, at: \.extend)
+            case .axis:
+                Pixels.updateRawValue(pix: &pix, value: value, at: \.axis)
+            case .holdEdge:
+                Pixels.updateValue(pix: &pix, value: value, at: \.holdEdge)
             }
         }
     }
 }
 
-public extension PixelDisplace {
-    
-    func pixelExtend(_ extend: ExtendMode) -> Self {
-        var pixel = self
-        pixel.metadata[Key.extend.rawValue] = extend.rawValue
-        return pixel
-    }
-}
-
-struct PixelDisplace_Previews: PreviewProvider {
+struct PixelLookup_Previews: PreviewProvider {
     static var previews: some View {
         Pixels {
-            PixelDisplace(distance: 100) {
+            PixelLookup(axis: .vertical) {
                 PixelCircle(radius: 100)
+                    .pixelBlur(radius: 50)
             } withPixel: {
-                PixelStar(count: 5, radius: 100)
+                PixelGradient(direction: .vertical, colorStops: [
+                    PixelColorStop(at: 0.0, color: .red),
+                    PixelColorStop(at: 0.5, color: .orange),
+                    PixelColorStop(at: 1.0, color: .yellow),
+                ])
             }
         }
     }
