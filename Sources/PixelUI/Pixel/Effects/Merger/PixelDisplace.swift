@@ -24,9 +24,10 @@ public struct PixelDisplace: Pixel {
         case extend
     }
     
-    public init(distance: CGFloat,
-                pixel leadingPixel: () -> Pixel,
-                withPixel trailingPixel: () -> Pixel) {
+    internal init(distance: CGFloat,
+                  origin: CGFloat = 0.5,
+                  pixel leadingPixel: () -> Pixel,
+                  withPixel trailingPixel: () -> Pixel) {
         
         pixelTree = .mergerEffect(leadingPixel(), trailingPixel())
         
@@ -34,6 +35,8 @@ public struct PixelDisplace: Pixel {
             switch key {
             case .distance:
                 metadata[key.rawValue] = distance
+            case .origin:
+                metadata[key.rawValue] = origin
             default:
                 continue
             }
@@ -76,6 +79,13 @@ public struct PixelDisplace: Pixel {
     }
 }
 
+public extension Pixel {
+    
+    func pixelDisplace(_ distance: CGFloat, origin: CGFloat = 0.5, pixel: () -> Pixel) -> PixelDisplace {
+        PixelDisplace(distance: distance, origin: origin, pixel: { self }, withPixel: pixel)
+    }
+}
+
 public extension PixelDisplace {
     
     func pixelExtend(_ extend: ExtendMode) -> Self {
@@ -88,11 +98,10 @@ public extension PixelDisplace {
 struct PixelDisplace_Previews: PreviewProvider {
     static var previews: some View {
         Pixels {
-            PixelDisplace(distance: 100) {
-                PixelCircle(radius: 100)
-            } withPixel: {
-                PixelStar(count: 5, radius: 100)
-            }
+            PixelCircle(radius: 100)
+                .pixelDisplace(100) {
+                    PixelNoise()
+                }
         }
     }
 }

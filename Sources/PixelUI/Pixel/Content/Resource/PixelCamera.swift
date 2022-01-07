@@ -24,7 +24,7 @@ public struct PixelCamera: Pixel {
         case camera
     }
     
-    public init(position camera: CameraPIX.Camera = .default) {
+    public init(_ camera: CameraPIX.Camera = .default) {
         
         for key in Key.allCases {
             switch key {

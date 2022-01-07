@@ -36,7 +36,7 @@ public struct PixelGradient: Pixel {
         case position
     }
     
-    public init(direction: GradientPIX.Direction,
+    public init(axis direction: GradientPIX.Direction,
                 colorStops: [PixelColorStop] = [
                     PixelColorStop(at: 0.0, color: .black),
                     PixelColorStop(at: 1.0, color: .white)
@@ -172,7 +172,7 @@ public extension PixelGradient {
 struct PixelGradient_Previews: PreviewProvider {
     static var previews: some View {
         Pixels {
-            PixelGradient(direction: .vertical)
+            PixelGradient(axis: .vertical)
         }
     }
 }

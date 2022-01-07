@@ -23,9 +23,9 @@ public struct PixelLookup: Pixel {
         case holdEdge
     }
     
-    public init(axis: LookupPIX.Axis,
-                pixel leadingPixel: () -> Pixel,
-                withPixel trailingPixel: () -> Pixel) {
+    internal init(axis: LookupPIX.Axis,
+                  pixel leadingPixel: () -> Pixel,
+                  withPixel trailingPixel: () -> Pixel) {
         
         pixelTree = .mergerEffect(leadingPixel(), trailingPixel())
 
@@ -71,19 +71,25 @@ public struct PixelLookup: Pixel {
     }
 }
 
+public extension Pixel {
+    
+    func pixelLookup(axis: LookupPIX.Axis, pixel: () -> Pixel) -> PixelLookup {
+        PixelLookup(axis: axis, pixel: { self }, withPixel: pixel)
+    }
+}
+
 struct PixelLookup_Previews: PreviewProvider {
     static var previews: some View {
         Pixels {
-            PixelLookup(axis: .vertical) {
-                PixelCircle(radius: 100)
-                    .pixelBlur(radius: 50)
-            } withPixel: {
-                PixelGradient(direction: .vertical, colorStops: [
-                    PixelColorStop(at: 0.0, color: .red),
-                    PixelColorStop(at: 0.5, color: .orange),
-                    PixelColorStop(at: 1.0, color: .yellow),
-                ])
-            }
+            PixelCircle(radius: 100)
+                .pixelBlur(radius: 50)
+                .pixelLookup(axis: .vertical) {
+                    PixelGradient(axis: .vertical, colorStops: [
+                        PixelColorStop(at: 0.0, color: .red),
+                        PixelColorStop(at: 0.5, color: .orange),
+                        PixelColorStop(at: 1.0, color: .yellow),
+                    ])
+                }
         }
     }
 }
