@@ -93,10 +93,6 @@ public extension Pixel {
     func pixelMonochrome() -> PixelColorShift {
         PixelColorShift(saturation: 0.0, pixel: { self })
     }
-    
-    func pixelTint(_ color: Color) -> PixelColorShift {
-        PixelColorShift(tintColor: color, pixel: { self })
-    }
 }
 
 struct PixelColorShift_Previews: PreviewProvider {
