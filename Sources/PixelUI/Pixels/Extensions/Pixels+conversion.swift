@@ -10,6 +10,10 @@ extension Pixels {
     static func asAngle(_ value: CGFloat) -> Angle {
         Angle(degrees: value * 360)
     }
+    
+    static func asRotation(_ value: Angle) -> CGFloat {
+        CGFloat(value.degrees) / 360
+    }
 }
 
 extension Pixels {
