@@ -131,36 +131,36 @@ public struct PixelLumaLevels: Pixel {
 
 public extension Pixel {
     
-    func pixelLumaBrightness(_ brightness: CGFloat, pixel: () -> Pixel) -> PixelLumaLevels {
-        PixelLumaLevels(brightness: brightness, pixel: { self }, withPixel: pixel)
+    func pixelLumaBrightness(_ brightness: CGFloat, lumaGamma: CGFloat = 1.0, pixel: () -> Pixel) -> PixelLumaLevels {
+        PixelLumaLevels(brightness: brightness, lumaGamma: lumaGamma, pixel: { self }, withPixel: pixel)
     }
     
-    func pixelLumaDarkness(_ darkness: CGFloat, pixel: () -> Pixel) -> PixelLumaLevels {
-        PixelLumaLevels(darkness: darkness, pixel: { self }, withPixel: pixel)
+    func pixelLumaDarkness(_ darkness: CGFloat, lumaGamma: CGFloat = 1.0, pixel: () -> Pixel) -> PixelLumaLevels {
+        PixelLumaLevels(darkness: darkness, lumaGamma: lumaGamma, pixel: { self }, withPixel: pixel)
     }
     
-    func pixelLumaContrast(_ contrast: CGFloat, pixel: () -> Pixel) -> PixelLumaLevels {
-        PixelLumaLevels(contrast: contrast, pixel: { self }, withPixel: pixel)
+    func pixelLumaContrast(_ contrast: CGFloat, lumaGamma: CGFloat = 1.0, pixel: () -> Pixel) -> PixelLumaLevels {
+        PixelLumaLevels(contrast: contrast, lumaGamma: lumaGamma, pixel: { self }, withPixel: pixel)
     }
     
-    func pixelLumaGamma(_ gamma: CGFloat, pixel: () -> Pixel) -> PixelLumaLevels {
-        PixelLumaLevels(gamma: gamma, pixel: { self }, withPixel: pixel)
+    func pixelLumaGamma(_ gamma: CGFloat, lumaGamma: CGFloat = 1.0, pixel: () -> Pixel) -> PixelLumaLevels {
+        PixelLumaLevels(gamma: gamma, lumaGamma: lumaGamma, pixel: { self }, withPixel: pixel)
     }
     
-    func pixelLumaInverted(pixel: () -> Pixel) -> PixelLumaLevels {
-        PixelLumaLevels(inverted: true, pixel: { self }, withPixel: pixel)
+    func pixelLumaInverted(lumaGamma: CGFloat = 1.0, pixel: () -> Pixel) -> PixelLumaLevels {
+        PixelLumaLevels(inverted: true, lumaGamma: lumaGamma, pixel: { self }, withPixel: pixel)
     }
     
-    func pixelLumaSmooth(pixel: () -> Pixel) -> PixelLumaLevels {
-        PixelLumaLevels(smooth: true, pixel: { self }, withPixel: pixel)
+    func pixelLumaSmooth(lumaGamma: CGFloat = 1.0, pixel: () -> Pixel) -> PixelLumaLevels {
+        PixelLumaLevels(smooth: true, lumaGamma: lumaGamma, pixel: { self }, withPixel: pixel)
     }
     
-    func pixelLumaOpacity(_ opacity: CGFloat, pixel: () -> Pixel) -> PixelLumaLevels {
-        PixelLumaLevels(opacity: opacity, pixel: { self }, withPixel: pixel)
+    func pixelLumaOpacity(_ opacity: CGFloat, lumaGamma: CGFloat = 1.0, pixel: () -> Pixel) -> PixelLumaLevels {
+        PixelLumaLevels(opacity: opacity, lumaGamma: lumaGamma, pixel: { self }, withPixel: pixel)
     }
     
-    func pixelLumaExposureOffset(_ offset: CGFloat, pixel: () -> Pixel) -> PixelLumaLevels {
-        PixelLumaLevels(offset: offset, pixel: { self }, withPixel: pixel)
+    func pixelLumaExposureOffset(_ offset: CGFloat, lumaGamma: CGFloat = 1.0, pixel: () -> Pixel) -> PixelLumaLevels {
+        PixelLumaLevels(offset: offset, lumaGamma: lumaGamma, pixel: { self }, withPixel: pixel)
     }
 }
 

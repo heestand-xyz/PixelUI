@@ -91,16 +91,16 @@ public struct PixelLumaColorShift: Pixel {
 
 public extension Pixel {
     
-    func pixelLumaHue(_ hue: CGFloat, pixel: () -> Pixel) -> PixelLumaColorShift {
-        PixelLumaColorShift(hue: hue, pixel: { self }, withPixel: pixel)
+    func pixelLumaHue(_ hue: CGFloat, lumaGamma: CGFloat = 1.0, pixel: () -> Pixel) -> PixelLumaColorShift {
+        PixelLumaColorShift(hue: hue, lumaGamma: lumaGamma, pixel: { self }, withPixel: pixel)
     }
     
-    func pixelLumaSaturation(_ saturation: CGFloat, pixel: () -> Pixel) -> PixelLumaColorShift {
-        PixelLumaColorShift(saturation: saturation, pixel: { self }, withPixel: pixel)
+    func pixelLumaSaturation(_ saturation: CGFloat, lumaGamma: CGFloat = 1.0, pixel: () -> Pixel) -> PixelLumaColorShift {
+        PixelLumaColorShift(saturation: saturation, lumaGamma: lumaGamma, pixel: { self }, withPixel: pixel)
     }
     
-    func pixelLumaMonochrome(pixel: () -> Pixel) -> PixelLumaColorShift {
-        PixelLumaColorShift(saturation: 0.0, pixel: { self }, withPixel: pixel)
+    func pixelLumaMonochrome(lumaGamma: CGFloat = 1.0, pixel: () -> Pixel) -> PixelLumaColorShift {
+        PixelLumaColorShift(saturation: 0.0, lumaGamma: lumaGamma, pixel: { self }, withPixel: pixel)
     }
 }
 

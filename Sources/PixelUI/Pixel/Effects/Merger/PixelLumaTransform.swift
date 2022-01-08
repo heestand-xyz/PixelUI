@@ -8,11 +8,11 @@ import PixelKit
 import SwiftUI
 import Resolution
 
-public struct PixelTransform: Pixel {
+public struct PixelLumaTransform: Pixel {
     
-    typealias Pix = TransformPIX
+    typealias Pix = LumaTransformPIX
     
-    public let pixType: PIXType = .effect(.single(.transform))
+    public let pixType: PIXType = .effect(.merger(.lumaTransform))
     
     public var pixelTree: PixelTree
     
@@ -23,6 +23,7 @@ public struct PixelTransform: Pixel {
         case rotation
         case scale
         case size
+        case lumaGamma
         case extend
     }
     
@@ -30,10 +31,12 @@ public struct PixelTransform: Pixel {
                   angle rotation: Angle = .zero,
                   scale: CGFloat = 1.0,
                   size: CGSize = CGSize(width: 1.0, height: 1.0),
-                  pixel: () -> Pixel) {
+                  lumaGamma: CGFloat = 1.0,
+                  pixel leadingPixel: () -> Pixel,
+                  withPixel trailingPixel: () -> Pixel) {
         
-        pixelTree = .singleEffect(pixel())
-        
+        pixelTree = .mergerEffect(leadingPixel(), trailingPixel())
+
         for key in Key.allCases {
             switch key {
             case .position:
@@ -44,6 +47,8 @@ public struct PixelTransform: Pixel {
                 metadata[key.rawValue] = scale
             case .size:
                 metadata[key.rawValue] = size
+            case .lumaGamma:
+                metadata[key.rawValue] = lumaGamma
             default:
                 continue
             }
@@ -65,6 +70,8 @@ public struct PixelTransform: Pixel {
             return pix.scale
         case .size:
             return pix.size
+        case .lumaGamma:
+            return pix.lumaGamma
         case .extend:
             return pix.extend.rawValue
         }
@@ -87,6 +94,8 @@ public struct PixelTransform: Pixel {
                 Pixels.updateValue(pix: &pix, value: value, at: \.scale)
             case .size:
                 Pixels.updateValue(pix: &pix, value: value, at: \.size)
+            case .lumaGamma:
+                Pixels.updateValue(pix: &pix, value: value, at: \.lumaGamma)
             case .extend:
                 Pixels.updateRawValue(pix: &pix, value: value, at: \.extend)
             }
@@ -96,24 +105,24 @@ public struct PixelTransform: Pixel {
 
 public extension Pixel {
     
-    func pixelOffset(x: CGFloat = 0.0, y: CGFloat = 0.0) -> PixelTransform {
-        PixelTransform(offset: CGPoint(x: x, y: y), pixel: { self })
+    func pixelLumaOffset(x: CGFloat = 0.0, y: CGFloat = 0.0, lumaGamma: CGFloat = 1.0, pixel: () -> Pixel) -> PixelLumaTransform {
+        PixelLumaTransform(offset: CGPoint(x: x, y: y), lumaGamma: lumaGamma, pixel: { self }, withPixel: pixel)
     }
     
-    func pixelRotate(_ angle: Angle) -> PixelTransform {
-        PixelTransform(angle: angle, pixel: { self })
+    func pixelLumaRotate(_ angle: Angle, lumaGamma: CGFloat = 1.0, pixel: () -> Pixel) -> PixelLumaTransform {
+        PixelLumaTransform(angle: angle, lumaGamma: lumaGamma, pixel: { self }, withPixel: pixel)
     }
     
-    func pixelScale(_ scale: CGFloat) -> PixelTransform {
-        PixelTransform(scale: scale, pixel: { self })
+    func pixelLumaScale(_ scale: CGFloat, lumaGamma: CGFloat = 1.0, pixel: () -> Pixel) -> PixelLumaTransform {
+        PixelLumaTransform(scale: scale, lumaGamma: lumaGamma, pixel: { self }, withPixel: pixel)
     }
     
-    func pixelScale(x: CGFloat = 1.0, y: CGFloat = 1.0) -> PixelTransform {
-        PixelTransform(size: CGSize(width: x, height: y), pixel: { self })
+    func pixelLumaScale(x: CGFloat = 1.0, y: CGFloat = 1.0, lumaGamma: CGFloat = 1.0, pixel: () -> Pixel) -> PixelLumaTransform {
+        PixelLumaTransform(size: CGSize(width: x, height: y), lumaGamma: lumaGamma, pixel: { self }, withPixel: pixel)
     }
 }
 
-extension PixelTransform {
+extension PixelLumaTransform {
     
     func pixelExtend(_ extend: ExtendMode) -> Self {
         var pixel = self
@@ -122,11 +131,13 @@ extension PixelTransform {
     }
 }
 
-struct PixelTransform_Previews: PreviewProvider {
+struct PixelLumaTransform_Previews: PreviewProvider {
     static var previews: some View {
         Pixels {
-            PixelCamera()
-                .pixelOffset(x: 100)
+            PixelCircle(radius: 500)
+                .pixelLumaOffset(x: 500) {
+                    PixelGradient(axis: .vertical)
+                }
         }
     }
 }

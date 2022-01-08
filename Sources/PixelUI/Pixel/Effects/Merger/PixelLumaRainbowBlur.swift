@@ -8,11 +8,11 @@ import PixelKit
 import SwiftUI
 import Resolution
 
-public struct PixelLumaBlur: Pixel {
+public struct PixelLumaRainbowBlur: Pixel {
     
-    typealias Pix = LumaBlurPIX
+    typealias Pix = LumaRainbowBlurPIX
     
-    public let pixType: PIXType = .effect(.merger(.lumaBlur))
+    public let pixType: PIXType = .effect(.merger(.lumaRainbowBlur))
     
     public var pixelTree: PixelTree
     
@@ -24,14 +24,16 @@ public struct PixelLumaBlur: Pixel {
         case quality
         case angle
         case position
+        case light
         case lumaGamma
     }
     
-    internal init(style: LumaBlurPIX.LumaBlurStyle,
+    internal init(style: LumaRainbowBlurPIX.RainbowLumaBlurStyle,
                   radius: CGFloat,
                   quality: PIX.SampleQualityMode = .high,
                   angle: Angle = .zero,
                   offset position: CGPoint = .zero,
+                  light: CGFloat = 1.0,
                   lumaGamma: CGFloat = 1.0,
                   pixel leadingPixel: () -> Pixel,
                   withPixel trailingPixel: () -> Pixel) {
@@ -50,6 +52,8 @@ public struct PixelLumaBlur: Pixel {
                 metadata[key.rawValue] = angle
             case .position:
                 metadata[key.rawValue] = position
+            case .light:
+                metadata[key.rawValue] = light
             case .lumaGamma:
                 metadata[key.rawValue] = lumaGamma
             }
@@ -73,6 +77,8 @@ public struct PixelLumaBlur: Pixel {
             return Pixels.asAngle(pix.angle)
         case .position:
             return Pixels.inZeroViewSpace(pix.position, size: size)
+        case .light:
+            return pix.light
         case .lumaGamma:
             return pix.lumaGamma
         }
@@ -97,6 +103,8 @@ public struct PixelLumaBlur: Pixel {
                 Pixels.updateValueAngle(pix: &pix, value: value, at: \.angle)
             case .position:
                 Pixels.updateValueInZeroPixelSpace(pix: &pix, value: value, size: size, at: \.position)
+            case .light:
+                Pixels.updateValue(pix: &pix, value: value, at: \.light)
             case .lumaGamma:
                 Pixels.updateValue(pix: &pix, value: value, at: \.lumaGamma)
             }
@@ -106,28 +114,24 @@ public struct PixelLumaBlur: Pixel {
 
 public extension Pixel {
     
-    func pixelLumaBlurBox(radius: CGFloat, lumaGamma: CGFloat = 1.0, pixel: () -> Pixel) -> PixelLumaBlur {
-        PixelLumaBlur(style: .box, radius: radius, lumaGamma: lumaGamma, pixel: { self }, withPixel: pixel)
+    func pixelLumaRainbowBlurCircle(radius: CGFloat, light: CGFloat = 1.0, lumaGamma: CGFloat = 1.0, pixel: () -> Pixel) -> PixelLumaRainbowBlur {
+        PixelLumaRainbowBlur(style: .circle, radius: radius, light: light, lumaGamma: lumaGamma, pixel: { self }, withPixel: pixel)
     }
     
-    func pixelLumaBlurAngle(radius: CGFloat, angle: Angle, lumaGamma: CGFloat = 1.0, pixel: () -> Pixel) -> PixelLumaBlur {
-        PixelLumaBlur(style: .angle, radius: radius, angle: angle, lumaGamma: lumaGamma, pixel: { self }, withPixel: pixel)
+    func pixelLumaRainbowBlurAngle(radius: CGFloat, angle: Angle, light: CGFloat = 1.0, lumaGamma: CGFloat = 1.0, pixel: () -> Pixel) -> PixelLumaRainbowBlur {
+        PixelLumaRainbowBlur(style: .angle, radius: radius, angle: angle, light: light, lumaGamma: lumaGamma, pixel: { self }, withPixel: pixel)
     }
     
-    func pixelLumaBlurZoom(radius: CGFloat, offset: CGPoint = .zero, lumaGamma: CGFloat = 1.0, pixel: () -> Pixel) -> PixelLumaBlur {
-        PixelLumaBlur(style: .zoom, radius: radius, offset: offset, lumaGamma: lumaGamma, pixel: { self }, withPixel: pixel)
-    }
-    
-    func pixelLumaBlurRandom(radius: CGFloat, lumaGamma: CGFloat = 1.0, pixel: () -> Pixel) -> PixelLumaBlur {
-        PixelLumaBlur(style: .random, radius: radius, lumaGamma: lumaGamma, pixel: { self }, withPixel: pixel)
+    func pixelLumaRainbowBlurZoom(radius: CGFloat, offset: CGPoint = .zero, light: CGFloat = 1.0, lumaGamma: CGFloat = 1.0, pixel: () -> Pixel) -> PixelLumaRainbowBlur {
+        PixelLumaRainbowBlur(style: .zoom, radius: radius, offset: offset, light: light, lumaGamma: lumaGamma, pixel: { self }, withPixel: pixel)
     }
 }
 
-struct PixelLumaBlur_Previews: PreviewProvider {
+struct PixelLumaRainbowBlur_Previews: PreviewProvider {
     static var previews: some View {
         Pixels {
-            PixelCircle(radius: 100)
-                .pixelLumaBlurBox(radius: 100) {
+            PixelCircle(radius: 500)
+                .pixelLumaRainbowBlurCircle(radius: 100) {
                     PixelGradient(axis: .vertical)
                 }
         }
