@@ -27,9 +27,9 @@ public struct PixelBlend: Pixel {
         case size
     }
     
-    internal init(mode blendMode: RenderKit.BlendMode,
-                  pixel leadingPixel: () -> Pixel,
-                  withPixel trailingPixel: () -> Pixel) {
+    public init(mode blendMode: RenderKit.BlendMode,
+                pixel leadingPixel: () -> Pixel,
+                withPixel trailingPixel: () -> Pixel) {
         
         pixelTree = .mergerEffect(leadingPixel(), trailingPixel())
         
@@ -93,13 +93,6 @@ public struct PixelBlend: Pixel {
     }
 }
 
-public extension Pixel {
-    
-    func pixelBlend(mode blendMode: RenderKit.BlendMode, pixel: () -> Pixel) -> PixelBlend {
-        PixelBlend(mode: blendMode, pixel: { self }, withPixel: pixel)
-    }
-}
-
 public extension PixelBlend {
     
     func pixelBlendOffset(_ offset: CGPoint) -> Self {
@@ -134,10 +127,11 @@ public extension PixelBlend {
 struct PixelBlend_Previews: PreviewProvider {
     static var previews: some View {
         Pixels {
-            PixelCircle(radius: 100)
-                .pixelBlend(mode: .difference) {
-                    PixelStar(count: 5, radius: 150)
-                }
+            PixelBlend(mode: .add) {
+                PixelCircle(radius: 100)
+            } withPixel: {
+                PixelStar(count: 5, radius: 150)
+            }
         }
     }
 }

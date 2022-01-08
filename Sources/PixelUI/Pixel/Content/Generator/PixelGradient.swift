@@ -37,6 +37,19 @@ public struct PixelGradient: Pixel {
     }
     
     public init(axis direction: GradientPIX.Direction,
+                colors: [Color]) {
+        var colorStops: [PixelColorStop] = []
+        if !colors.isEmpty {
+            for (index, color) in colors.enumerated() {
+                let fraction = CGFloat(index) / CGFloat(colors.count - 1)
+                let colorStop = PixelColorStop(at: fraction, color: color)
+                colorStops.append(colorStop)
+            }
+        }
+        self.init(axis: direction, colorStops: colorStops)
+    }
+    
+    public init(axis direction: GradientPIX.Direction,
                 colorStops: [PixelColorStop] = [
                     PixelColorStop(at: 0.0, color: .black),
                     PixelColorStop(at: 1.0, color: .white)
