@@ -171,8 +171,8 @@ struct PixelArray_Previews: PreviewProvider {
         Pixels {
             PixelArray(mode: .add, coordinates: [
                 PixelCoordinate(opacity: 0.333),
-                PixelCoordinate(offset: CGPoint(x: 200 * value, y: 0), angle: Angle(degrees: -180 * value), opacity: 0.333, index: 1),
-                PixelCoordinate(offset: CGPoint(x: -200 * value, y: 0), angle: Angle(degrees: 180 * value), opacity: 0.333, index: 2),
+                PixelCoordinate(offset: CGPoint(x: 200, y: 0), angle: Angle(degrees: -180), opacity: 0.333, index: 1),
+                PixelCoordinate(offset: CGPoint(x: -200, y: 0), angle: Angle(degrees: 180), opacity: 0.333, index: 2),
             ]) {
                 PixelCircle(radius: 100)
                 PixelStar(count: 5, radius: 100)
