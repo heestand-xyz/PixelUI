@@ -34,7 +34,9 @@ struct ContentView: View {
 ```swift
 import SwiftUI
 import PixelUI
+```
 
+```swift
 struct GradientsView: View {
     
     var body: some View {
@@ -60,7 +62,9 @@ struct GradientsView: View {
 ```swift
 import SwiftUI
 import PixelUI
+```
 
+```swift
 struct EffectsView: View {
     
     var body: some View {
@@ -91,10 +95,11 @@ struct EffectsView: View {
 <img src="https://github.com/heestand-xyz/PixelUI/blob/main/Assets/Images/PixelUI-Example-1.png?raw=true" width="300">
 
 ```swift
-
 import SwiftUI
 import PixelUI
+```
 
+```swift
 struct ShapesView: View {
     
     var body: some View {
