@@ -15,7 +15,7 @@ let package = Package(
             targets: ["PixelUI"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/heestand-xyz/PixelKit", from: "2.2.0"),
+        .package(url: "https://github.com/heestand-xyz/PixelKit", from: "3.0.1"),
         .package(url: "https://github.com/heestand-xyz/PixelColor", from: "1.3.0"),
         .package(url: "https://github.com/heestand-xyz/Resolution", from: "1.0.3"),
         .package(url: "https://github.com/heestand-xyz/MultiViews", from: "1.4.1"),
