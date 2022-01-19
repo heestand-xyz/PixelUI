@@ -27,7 +27,7 @@ public struct PixelLumaBlur: Pixel {
         case lumaGamma
     }
     
-    internal init(style: LumaBlurPIX.LumaBlurStyle,
+    internal init(style: LumaBlurPIX.Style,
                   radius: CGFloat,
                   quality: PIX.SampleQualityMode = .high,
                   angle: Angle = .zero,

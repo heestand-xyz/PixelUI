@@ -27,7 +27,7 @@ public struct PixelRainbowBlur: Pixel {
         case light
     }
     
-    internal init(style: RainbowBlurPIX.RainbowBlurStyle,
+    internal init(style: RainbowBlurPIX.Style,
                   radius: CGFloat,
                   quality: PIX.SampleQualityMode,
                   angle: CGFloat = 0.0,
