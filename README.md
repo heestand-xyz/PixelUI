@@ -17,10 +17,12 @@ import PixelUI
 
 ```swift
 struct ContentView: View {
-    
+
     var body: some View {
-    
-        PixelCamera()
+
+        Pixels {
+            PixelCamera()
+        }
     }
 }
 ```
